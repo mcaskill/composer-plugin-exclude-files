@@ -2,7 +2,6 @@ sudo: false
 
 language: php
 php:
-  - 5.5
   - 5.6
   - 7.0
   - 7.1
@@ -12,7 +11,7 @@ php:
 matrix:
   fast_finish: true
   allow_failures:
-    - php: 5.5
+    - php: 5.6
     - php: nightly
 
 branches:
@@ -30,4 +29,4 @@ before_script:
 script: composer test
 
 after_script:
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then php vendor/bin/coveralls -v ; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == '7.1' ]]; then php vendor/bin/php-coveralls -v ; fi

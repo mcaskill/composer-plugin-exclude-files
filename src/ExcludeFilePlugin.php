@@ -167,7 +167,7 @@ class ExcludeFilePlugin implements
      * @param  string   $vendorDir  The directory for installed dependencies.
      * @return array    Retuns the list of excluded files, prepended with the vendor directory.
      */
-    private function parseExcludedFiles(array $paths, string $vendorDir)
+    private function parseExcludedFiles(array $paths, $vendorDir)
     {
         foreach ($paths as &$path) {
             $path = $vendorDir . '/' . $path;
