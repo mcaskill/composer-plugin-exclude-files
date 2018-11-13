@@ -105,7 +105,7 @@ class ExcludeFilePlugin implements
                 continue;
             }
 
-            $autoload = $package->getAutoload();
+            $autoload = $package->isDev() ? $package->getDevAutoload() : $package->getAutoload();
 
             // Skip misconfigured packages
             if (!isset($autoload[$type]) || !is_array($autoload[$type])) {
@@ -123,6 +123,7 @@ class ExcludeFilePlugin implements
                 }
 
                 $relativePath = $installPath . '/' . $path;
+                $relativePath = str_replace('\\', '/', $relativePath);
 
                 if (in_array($relativePath, $blacklist)) {
                     unset($autoload[$type][$key]);
@@ -143,7 +144,7 @@ class ExcludeFilePlugin implements
     {
         $type = self::EXCLUDE_FILES_PROPERTY;
 
-        $autoload = $package->getAutoload();
+        $autoload = $package->isDev() ? $package->getDevAutoload() : $package->getAutoload();
 
         // Skip misconfigured or empty packages
         if (isset($autoload[$type]) && is_array($autoload[$type])) {
@@ -169,6 +170,8 @@ class ExcludeFilePlugin implements
      */
     private function parseExcludedFiles(array $paths, $vendorDir)
     {
+        $vendorDir = str_replace('\\', '/', $vendorDir);
+
         foreach ($paths as &$path) {
             $path = $vendorDir . '/' . $path;
         }
