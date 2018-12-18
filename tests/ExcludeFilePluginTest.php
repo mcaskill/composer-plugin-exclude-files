@@ -14,6 +14,7 @@ namespace Tests\McAskill\Composer;
 use Composer\Composer;
 use Composer\Config;
 use Composer\Autoload\AutoloadGenerator;
+use Composer\Package\Link;
 use Composer\Package\Package;
 use Composer\Package\RootPackage;
 use Composer\Script\ScriptEvents;
@@ -150,6 +151,11 @@ class ExcludeFilePluginTest extends TestCase
         $plugin->parseAutoloads();
 
         $package = new RootPackage('a', '1.0', '1.0');
+        $package->setRequires([
+            new Link('a', 'a/a'),
+            new Link('a', 'b/b'),
+            new Link('a', 'c/c'),
+        ]);
         $this->composer->setPackage($package);
 
         $packages = [];
@@ -162,6 +168,8 @@ class ExcludeFilePluginTest extends TestCase
         $b->setAutoload([ 'files' => [ 'test2.php' ] ]);
         $c->setAutoload([ 'files' => [ 'test3.php', 'foo/bar/test4.php' ] ]);
         $c->setTargetDir('foo/bar');
+        $c->setRequires([ new Link('c', 'd/d') ]);
+        $d->setRequires([ new Link('d', 'e/e') ]);
 
         $this->repository->expects($this->any())
             ->method('getCanonicalPackages')
