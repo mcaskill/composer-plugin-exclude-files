@@ -123,6 +123,7 @@ class ExcludeFilePlugin implements
                 }
 
                 $relativePath = $installPath . '/' . $path;
+                $relativePath = str_replace('\\', '/', $relativePath);
 
                 if (in_array($relativePath, $blacklist)) {
                     unset($autoload[$type][$key]);
@@ -169,6 +170,8 @@ class ExcludeFilePlugin implements
      */
     private function parseExcludedFiles(array $paths, $vendorDir)
     {
+        $vendorDir = str_replace('\\', '/', $vendorDir);
+
         foreach ($paths as &$path) {
             $path = $vendorDir . '/' . $path;
         }
