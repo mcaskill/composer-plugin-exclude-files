@@ -100,6 +100,9 @@ class ExcludeFilePlugin implements
     private function filterAutoloads(array $packageMap, PackageInterface $mainPackage, array $blacklist = null)
     {
         $type = self::INCLUDE_FILES_PROPERTY;
+
+        $blacklist = array_flip($blacklist);
+
         foreach ($packageMap as $item) {
             list($package, $installPath) = $item;
 
@@ -128,7 +131,7 @@ class ExcludeFilePlugin implements
                 $resolvedPath = $installPath . '/' . $path;
                 $resolvedPath = strtr($resolvedPath, '\\', '/');
 
-                if (in_array($relativePath, $blacklist)) {
+                if (isset($blacklist[$resolvedPath])) {
                     unset($autoload[$type][$key]);
                 }
             }
