@@ -17,6 +17,7 @@ use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
+use Composer\Util\Filesystem;
 
 class ExcludeFilePlugin implements
     PluginInterface,
@@ -76,8 +77,10 @@ class ExcludeFilePlugin implements
             return;
         }
 
-        $vendorDir  = $composer->getConfig()->get('vendor-dir');
-        $exclude    = $this->parseExcludedFiles($exclude, $vendorDir);
+        $filesystem = new Filesystem();
+        $config     = $composer->getConfig();
+        $vendorPath = $filesystem->normalizePath(realpath(realpath($config->get('vendor-dir'))));
+        $exclude    = $this->parseExcludedFiles($exclude, $vendorPath);
 
         $generator  = $composer->getAutoloadGenerator();
         $packages   = $composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages();
@@ -122,7 +125,8 @@ class ExcludeFilePlugin implements
                     $path = $package->getTargetDir() . '/' . $path;
                 }
 
-                $relativePath = $installPath . '/' . $path;
+                $resolvedPath = $installPath . '/' . $path;
+                $resolvedPath = strtr($resolvedPath, '\\', '/');
 
                 if (in_array($relativePath, $blacklist)) {
                     unset($autoload[$type][$key]);
@@ -164,13 +168,14 @@ class ExcludeFilePlugin implements
      * Prepends the vendor directory to each path in "extra.exclude-from-files".
      *
      * @param  string[] $paths      Array of paths absolute from the vendor directory.
-     * @param  string   $vendorDir  The directory for installed dependencies.
+     * @param  string   $vendorPath The directory for installed dependencies.
      * @return array    Retuns the list of excluded files, prepended with the vendor directory.
      */
-    private function parseExcludedFiles(array $paths, $vendorDir)
+    private function parseExcludedFiles(array $paths, $vendorPath)
     {
         foreach ($paths as &$path) {
-            $path = $vendorDir . '/' . $path;
+            $path = preg_replace('{/+}', '/', trim(strtr($path, '\\', '/'), '/'));
+            $path = $vendorPath . '/' . $path;
         }
 
         return $paths;
