@@ -1,9 +1,9 @@
 # Exclude PHP files from Composer
 
-[![Build Status](https://travis-ci.org/mcaskill/composer-plugin-exclude-files.svg?branch=master)](https://travis-ci.org/mcaskill/composer-plugin-exclude-files)
-[![Coverage Status](https://coveralls.io/repos/github/mcaskill/composer-plugin-exclude-files/badge.svg?branch=master)](https://coveralls.io/github/mcaskill/composer-plugin-exclude-files?branch=master)
-[![License](https://poser.pugx.org/mcaskill/composer-exclude-files/license)](https://packagist.org/packages/mcaskill/composer-exclude-files)
-![GitHub tag](https://img.shields.io/github/tag/mcaskill/composer-plugin-exclude-files.svg)
+[![Build Status][travis-badge]][travis-ci.org]
+[![Coverage Status][coveralls-badge]][coveralls.io]
+[![License][license-badge]][packagist.org]
+![GitHub Tag][release-badge]
 
 A Composer plugin for excluding files required by packages using the 'files' autoloading mechanism.
 
@@ -15,13 +15,13 @@ Resolves [composer/composer#5029](//github.com/composer/composer/issues/5029)
 
 The plugin can be installed locally or globally.
 
-```
+```console
 $ composer require mcaskill/composer-exclude-files
 ```
 
 ## Usage
 
-> You can only ignore files from your main `composer.json`.  
+> You can only ignore files from your main `composer.json`.
 > File exclusions of dependencies' `composer.json`s are ignored.
 
 From your main `composer.json`, add the `exclude-from-files` property to either the 'autoload' section or the 'extra' section.
@@ -31,7 +31,7 @@ This plugin is invoked before the autoloader is dumped, either during `install`/
 
 Example:
 
-```
+```json
 {
     "require": {
         "illuminate/support": "^5.5"
@@ -51,3 +51,12 @@ The resulting effect is the specified files are never included in `vendor/compos
 ## License
 
 This is licensed under MIT.
+
+[travis-badge]:    https://travis-ci.org/mcaskill/composer-plugin-exclude-files.svg?branch=master
+[coveralls-badge]: https://coveralls.io/repos/github/mcaskill/composer-plugin-exclude-files/badge.svg?branch=master
+[license-badge]:   https://poser.pugx.org/mcaskill/composer-exclude-files/license
+[release-badge]:   https://img.shields.io/github/tag/mcaskill/composer-plugin-exclude-files.svg
+
+[travis-ci.org]:   https://travis-ci.org/mcaskill/composer-plugin-exclude-files
+[coveralls.io]:    https://coveralls.io/github/mcaskill/composer-plugin-exclude-files?branch=master
+[packagist.org]:   https://packagist.org/packages/mcaskill/composer-exclude-files
