@@ -83,9 +83,9 @@ class ExcludeFilePluginTest extends TestCase
         $this->origDir = getcwd();
         chdir($this->vendorDir);
 
-        $this->io = $this->createMock('Composer\IO\IOInterface');
+        $this->io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
 
-        $this->repository = $this->createMock('Composer\Repository\InstalledRepositoryInterface');
+        $this->repository = $this->getMockBuilder('Composer\Repository\InstalledRepositoryInterface')->getMock();
 
         $rm = $this->getMockBuilder('Composer\Repository\RepositoryManager')
             ->disableOriginalConstructor()
@@ -113,7 +113,7 @@ class ExcludeFilePluginTest extends TestCase
 
         $this->generator = new AutoloadGenerator($ed);
 
-        $this->config = new Config();
+        $this->config = new Config(false);
         $this->config->merge(array(
             'config' => array(
                 'vendor-dir' => $this->vendorDir,
@@ -265,20 +265,20 @@ class ExcludeFilePluginTest extends TestCase
     {
         $a = __DIR__ . '/Fixtures/autoload_' . $name . '.php';
         $b = $dir . '/autoload_' . $type . '.php';
-        $this->assertFileEquals($a, $b);
+        $this->assertFileContentEquals($a, $b);
     }
 
     /**
-     * @see \Composer\Test\Autoload\AutoloadGeneratorTest::assertFileEquals()
+     * @see \Composer\Test\Autoload\AutoloadGeneratorTest::assertFileContentEquals()
      */
-    public static function assertFileEquals(
+    public static function assertFileContentEquals(
         $expected,
         $actual,
         $message = '',
         $canonicalize = false,
         $ignoreCase = false
     ) {
-        return self::assertEquals(
+        return self::assertEqualsNormalized(
             file_get_contents($expected),
             file_get_contents($actual),
             $message ?: $expected.' equals '.$actual,
@@ -290,9 +290,9 @@ class ExcludeFilePluginTest extends TestCase
     }
 
     /**
-     * @see \Composer\Test\Autoload\AutoloadGeneratorTest::assertEquals()
+     * @see \Composer\Test\Autoload\AutoloadGeneratorTest::assertEqualsNormalized()
      */
-    public static function assertEquals(
+    public static function assertEqualsNormalized(
         $expected,
         $actual,
         $message = '',
