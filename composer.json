@@ -33,6 +33,12 @@
         },
         "class": "McAskill\\Composer\\ExcludeFilePlugin"
     },
+    "config": {
+        "platform": {
+            "php": "5.3.9"
+        },
+        "platform-check": false
+    },
     "scripts": {
         "test": [
             "@tests"
