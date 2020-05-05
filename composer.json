@@ -15,7 +15,10 @@
     "require-dev": {
         "composer/composer": "^1.0",
         "php-coveralls/php-coveralls": "^2.0",
-        "phpunit/phpunit": "^5.7 || ^6.5"
+        "symfony/phpunit-bridge": "^3.4"
+    },
+    "conflict": {
+        "symfony/phpunit-bridge": "3.4.40"
     },
     "autoload": {
         "psr-4": {
@@ -40,13 +43,10 @@
         "platform-check": false
     },
     "scripts": {
-        "test": [
-            "@tests"
-        ],
-        "tests": [
-            "@phpunit"
-        ],
-        "phpunit": "php vendor/bin/phpunit"
+        "test": "simple-phpunit"
+    },
+    "scripts-descriptions": {
+        "test": "Run all tests"
     },
     "minimum-stability": "dev",
     "prefer-stable": true
