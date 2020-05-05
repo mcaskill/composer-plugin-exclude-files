@@ -50,9 +50,9 @@ class ExcludeFilePlugin implements
      */
     public static function getSubscribedEvents()
     {
-        return [
-            ScriptEvents::PRE_AUTOLOAD_DUMP => 'parseAutoloads'
-        ];
+        return array(
+            ScriptEvents::PRE_AUTOLOAD_DUMP => 'parseAutoloads',
+        );
     }
 
     /**
@@ -78,12 +78,12 @@ class ExcludeFilePlugin implements
         }
 
         $filesystem = new Filesystem();
-        $config     = $composer->getConfig();
+        $config = $composer->getConfig();
         $vendorPath = $filesystem->normalizePath(realpath(realpath($config->get('vendor-dir'))));
-        $exclude    = $this->parseExcludedFiles($exclude, $vendorPath);
+        $exclude = $this->parseExcludedFiles($exclude, $vendorPath);
 
-        $generator  = $composer->getAutoloadGenerator();
-        $packages   = $composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages();
+        $generator = $composer->getAutoloadGenerator();
+        $packages = $composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages();
         $packageMap = $generator->buildPackageMap($composer->getInstallationManager(), $package, $packages);
 
         $this->filterAutoloads($packageMap, $package, $exclude);
