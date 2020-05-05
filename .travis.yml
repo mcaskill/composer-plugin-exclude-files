@@ -17,6 +17,9 @@ matrix:
     - php: 7.1
     - php: 7.2
     - php: 7.3
+    - php: 7.3
+      env:
+        - COMPOSER_SNAPSHOT=true
     - php: 7.4
       env:
         - deps=high
@@ -44,6 +47,8 @@ install:
   - if [[ $deps == 'high' ]]; then composer config platform.php 7.2.4; composer update $flags; fi
   # install dependencies
   - composer install $flags
+  # install snapshot of composer
+  - if [[ $COMPOSER_SNAPSHOT == 'true' ]]; then composer require composer/composer:^2.0@dev --prefer-stable --update-with-dependencies; fi
 
 script:
   - ./vendor/bin/simple-phpunit

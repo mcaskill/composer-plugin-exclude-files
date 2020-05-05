@@ -44,6 +44,34 @@ class ExcludeFilePlugin implements
     }
 
     /**
+     * Remove any hooks from Composer.
+     *
+     * @codeCoverageIgnore
+     *
+     * @param  Composer    $composer The Composer instance.
+     * @param  IOInterface $io       The Input/Output instance.
+     * @return void
+     */
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+        // no need to deactivate anything
+    }
+
+    /**
+     * Prepare the plugin to be uninstalled.
+     *
+     * @codeCoverageIgnore
+     *
+     * @param  Composer    $composer The Composer instance.
+     * @param  IOInterface $io       The Input/Output instance.
+     * @return void
+     */
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
+        // no need to uninstall anything
+    }
+
+    /**
      * Gets a list of event names this subscriber wants to listen to.
      *
      * @return array The event names to listen to.
