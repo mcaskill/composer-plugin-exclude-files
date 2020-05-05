@@ -114,11 +114,11 @@ class ExcludeFilePluginTest extends TestCase
         $this->generator = new AutoloadGenerator($ed);
 
         $this->config = new Config();
-        $this->config->merge([
-            'config' => [
-                'vendor-dir' => $this->vendorDir
-            ]
-        ]);
+        $this->config->merge(array(
+            'config' => array(
+                'vendor-dir' => $this->vendorDir,
+            ),
+        ));
 
         $composer = new Composer();
         $composer->setConfig($this->config);
@@ -151,25 +151,25 @@ class ExcludeFilePluginTest extends TestCase
         $plugin->parseAutoloads();
 
         $package = new RootPackage('a', '1.0', '1.0');
-        $package->setRequires([
+        $package->setRequires(array(
             new Link('a', 'a/a'),
             new Link('a', 'b/b'),
             new Link('a', 'c/c'),
-        ]);
+        ));
         $this->composer->setPackage($package);
 
-        $packages = [];
+        $packages = array();
         $packages[] = $a = new Package('a/a', '1.0', '1.0');
         $packages[] = $b = new Package('b/b', '1.0', '1.0');
         $packages[] = $c = new Package('c/c', '1.0', '1.0');
         $packages[] = $d = new Package('d/d', '1.0', '1.0');
         $packages[] = $e = new Package('e/e', '1.0', '1.0');
-        $a->setAutoload([ 'files' => [ 'test.php' ] ]);
-        $b->setAutoload([ 'files' => [ 'test2.php' ] ]);
-        $c->setAutoload([ 'files' => [ 'test3.php', 'foo/bar/test4.php' ] ]);
+        $a->setAutoload(array( 'files' => array( 'test.php' ) ));
+        $b->setAutoload(array( 'files' => array( 'test2.php' ) ));
+        $c->setAutoload(array( 'files' => array( 'test3.php', 'foo/bar/test4.php' ) ));
         $c->setTargetDir('foo/bar');
-        $c->setRequires([ new Link('c', 'd/d') ]);
-        $d->setRequires([ new Link('d', 'e/e') ]);
+        $c->setRequires(array( new Link('c', 'd/d') ));
+        $d->setRequires(array( new Link('d', 'e/e') ));
 
         $this->repository->expects($this->any())
             ->method('getCanonicalPackages')
@@ -191,12 +191,12 @@ class ExcludeFilePluginTest extends TestCase
         // Check standard autoload
         $this->assertAutoloadFiles('files1', $this->vendorDir.'/composer', 'files');
 
-        $package->setAutoload([
-            'exclude-from-files' => [
+        $package->setAutoload(array(
+            'exclude-from-files' => array(
                 'b/b/test2.php',
-                'c/c/foo/bar/test3.php'
-            ]
-        ]);
+                'c/c/foo/bar/test3.php',
+            ),
+        ));
 
         // 3. Check plugin filters autoloads if the root package
         // excludes files from "autoload" section
@@ -207,13 +207,13 @@ class ExcludeFilePluginTest extends TestCase
         // Make autoload has excluded specified files
         $this->assertAutoloadFiles('files2', $this->vendorDir.'/composer', 'files');
 
-        $package->setAutoload([]);
-        $package->setExtra([
-            'exclude-from-files' => [
+        $package->setAutoload(array());
+        $package->setExtra(array(
+            'exclude-from-files' => array(
                 'b/b/test2.php',
-                'c/c/foo/bar/test3.php'
-            ]
-        ]);
+                'c/c/foo/bar/test3.php',
+            ),
+        ));
 
         // 4. Check plugin filters autoloads if the root package
         // excludes files from "extra" section
