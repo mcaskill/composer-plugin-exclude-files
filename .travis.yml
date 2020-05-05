@@ -26,7 +26,8 @@ before_script:
   - mkdir -p build/logs
   - composer update --dev --no-interaction
 
-script: composer test
+script:
+  - ./vendor/bin/simple-phpunit
 
 after_script:
   - if [[ "$TRAVIS_PHP_VERSION" == '7.1' ]]; then php vendor/bin/php-coveralls -v ; fi
