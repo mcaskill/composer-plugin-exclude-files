@@ -41,13 +41,13 @@ install:
   # flags to pass to install
   - flags="--ansi --prefer-dist --no-interaction --optimize-autoloader --no-suggest --no-progress"
   # update deps to latest in case of high deps build
-  - if [[ "$deps" == "high" ]]; then composer config platform.php 7.2.4; composer update $flags; fi
-  # install dependencies using system provided composer binary
+  - if [[ $deps == 'high' ]]; then composer config platform.php 7.2.4; composer update $flags; fi
+  # install dependencies
   - composer install $flags
 
 script:
   - ./vendor/bin/simple-phpunit
 
 after_script:
-  - if [[ "$TRAVIS_PHP_VERSION" == '7.4' ]]; then composer require php-coveralls/php-coveralls ; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == '7.4' ]]; then php vendor/bin/php-coveralls -v ; fi
+  - if [[ $TRAVIS_PHP_VERSION == '7.4' ]]; then composer require php-coveralls/php-coveralls; fi
+  - if [[ $TRAVIS_PHP_VERSION == '7.4' ]]; then php vendor/bin/php-coveralls -v; fi
