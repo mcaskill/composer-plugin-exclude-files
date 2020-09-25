@@ -191,23 +191,6 @@ class ExcludeFilePluginTest extends TestCase
         // Check standard autoload
         $this->assertAutoloadFiles('files1', $this->vendorDir.'/composer', 'files');
 
-        $package->setAutoload(array(
-            'exclude-from-files' => array(
-                'b/b/test2.php',
-                'c/c/foo/bar/test3.php',
-            ),
-        ));
-
-        // 3. Check plugin filters autoloads if the root package
-        // excludes files from "autoload" section
-        $plugin->parseAutoloads();
-
-        $this->generator->dump($this->config, $this->repository, $package, $this->im, 'composer', true, '_1');
-
-        // Make autoload has excluded specified files
-        $this->assertAutoloadFiles('files2', $this->vendorDir.'/composer', 'files');
-
-        $package->setAutoload(array());
         $package->setExtra(array(
             'exclude-from-files' => array(
                 'b/b/test2.php',

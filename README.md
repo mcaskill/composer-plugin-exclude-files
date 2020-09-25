@@ -24,8 +24,8 @@ $ composer require mcaskill/composer-exclude-files
 > You can only ignore files from your main `composer.json`.
 > File exclusions of dependencies' `composer.json`s are ignored.
 
-From your main `composer.json`, add the `exclude-from-files` property to either the 'autoload' section or the 'extra' section.
-The list of paths must be absolute from the vendor directory.
+From your main `composer.json`, add the `exclude-from-files` property to either the `extra` section.
+The list of paths must be relative to the composer manifest.
 
 This plugin is invoked before the autoloader is dumped, either during `install`/`update`, or via the `dump-autoload` command.
 
@@ -36,7 +36,7 @@ Example:
     "require": {
         "illuminate/support": "^5.5"
     },
-    "autoload": {
+    "extra": {
         "exclude-from-files": [
             "illuminate/support/helpers.php"
         ]
