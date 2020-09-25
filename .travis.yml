@@ -2,29 +2,47 @@ os: linux
 dist: bionic
 language: php
 
+env:
+  global:
+    - COMPOSER_FLAGS="--ansi --no-interaction --no-progress --no-suggest --prefer-dist"
+    - COMPOSER_UPDATE_FLAGS=""
+    - SYMFONY_PHPUNIT_VERSION=8.3
+    - SYMFONY_PHPUNIT_REMOVE_RETURN_TYPEHINT=1
+
 matrix:
   include:
     - php: 5.3
       dist: precise
+      env:
+        - SYMFONY_PHPUNIT_VERSION=4.8
     - php: 5.4
       dist: trusty
+      env:
+        - SYMFONY_PHPUNIT_VERSION=4.8
     - php: 5.5
       dist: trusty
+      env:
+        - SYMFONY_PHPUNIT_VERSION=4.8
     - php: 5.6
       dist: trusty
+      env:
+        - SYMFONY_PHPUNIT_VERSION=5.7
     - php: 7.0
       dist: xenial
+      env:
+        - SYMFONY_PHPUNIT_VERSION=6.5
     - php: 7.1
+      env:
+        - SYMFONY_PHPUNIT_VERSION=7.5
     - php: 7.2
     - php: 7.3
     - php: 7.3
       env:
         - COMPOSER_SNAPSHOT=true
     - php: 7.4
-      env:
-        - deps=high
-        - SYMFONY_PHPUNIT_VERSION=7.5
     - php: nightly
+      env:
+        - SYMFONY_PHPUNIT_VERSION=9.3
   fast_finish: true
   allow_failures:
     - php: nightly
@@ -41,14 +59,18 @@ before_install:
   - composer self-update
 
 install:
-  # flags to pass to install
-  - flags="--ansi --prefer-dist --no-interaction --optimize-autoloader --no-suggest --no-progress"
-  # update deps to latest in case of high deps build
-  - if [[ $deps == 'high' ]]; then composer config platform.php 7.2.4; composer update $flags; fi
-  # install dependencies
-  - composer install $flags
-  # install snapshot of composer
+  # Remove platform config to get latest dependencies or current PHP version
+  - composer config platform --unset
+  # Update dependencies from composer.json using composer binary provided by system
+  - composer update $COMPOSER_UPDATE_FLAGS $COMPOSER_FLAGS
+  # Install snapshot of Composer
   - if [[ $COMPOSER_SNAPSHOT == 'true' ]]; then composer require composer/composer:^2.0@dev --prefer-stable --update-with-dependencies; fi
+  # Require latest PHPUnitBridge for PHP 8
+  - if [[ $TRAVIS_PHP_VERSION == 'nightly' ]]; then composer require --no-update --dev symfony/phpunit-bridge:^5.1; fi
+  # Update Symfony's PHPUnitBridge to latest available for the current PHP always as it is not really a dependency of the project
+  - composer update $COMPOSER_FLAGS symfony/phpunit-bridge
+  # Install dependencies
+  - composer install $COMPOSER_FLAGS
 
 script:
   - ./vendor/bin/simple-phpunit
