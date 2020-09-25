@@ -17,6 +17,8 @@ use Composer\Autoload\AutoloadGenerator;
 use Composer\Package\Link;
 use Composer\Package\Package;
 use Composer\Package\RootPackage;
+use Composer\Semver\Constraint\EmptyConstraint;
+use Composer\Semver\Constraint\MatchAllConstraint;
 use Composer\Script\ScriptEvents;
 use Composer\Util\Filesystem;
 use Composer\Util\Silencer;
@@ -140,6 +142,16 @@ class ExcludeFilePluginTest extends TestCase
 
     public function testAutoloadDump()
     {
+        if (class_exists('Composer\\Semver\\Constraint\\MatchAllConstraint')) {
+            $createConstraint = function () {
+                return new MatchAllConstraint();
+            };
+        } else {
+            $createConstraint = function () {
+                return new EmptyConstraint();
+            };
+        }
+
         $plugin = new ExcludeFilePlugin();
         $plugin->activate($this->composer, $this->io);
 
@@ -152,9 +164,9 @@ class ExcludeFilePluginTest extends TestCase
 
         $package = new RootPackage('a', '1.0', '1.0');
         $package->setRequires(array(
-            new Link('a', 'a/a'),
-            new Link('a', 'b/b'),
-            new Link('a', 'c/c'),
+            new Link('a', 'a/a', $createConstraint()),
+            new Link('a', 'b/b', $createConstraint()),
+            new Link('a', 'c/c', $createConstraint()),
         ));
         $this->composer->setPackage($package);
 
@@ -168,8 +180,8 @@ class ExcludeFilePluginTest extends TestCase
         $b->setAutoload(array( 'files' => array( 'test2.php' ) ));
         $c->setAutoload(array( 'files' => array( 'test3.php', 'foo/bar/test4.php' ) ));
         $c->setTargetDir('foo/bar');
-        $c->setRequires(array( new Link('c', 'd/d') ));
-        $d->setRequires(array( new Link('d', 'e/e') ));
+        $c->setRequires(array( new Link('c', 'd/d', $createConstraint()) ));
+        $d->setRequires(array( new Link('d', 'e/e', $createConstraint()) ));
 
         $this->repository->expects($this->any())
             ->method('getCanonicalPackages')
