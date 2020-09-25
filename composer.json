@@ -15,10 +15,7 @@
     },
     "require-dev": {
         "composer/composer": "^1.0 || ^2.0",
-        "symfony/phpunit-bridge": "^3.4"
-    },
-    "conflict": {
-        "symfony/phpunit-bridge": "3.4.40"
+        "symfony/phpunit-bridge": "^4.2 || ^5.0"
     },
     "autoload": {
         "psr-4": {
