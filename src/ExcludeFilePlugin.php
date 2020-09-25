@@ -32,6 +32,11 @@ class ExcludeFilePlugin implements
     private $composer;
 
     /**
+     * @var IOInterface
+     */
+    private $io;
+
+    /**
      * Apply plugin modifications to Composer.
      *
      * @param  Composer    $composer The Composer instance.
@@ -41,6 +46,7 @@ class ExcludeFilePlugin implements
     public function activate(Composer $composer, IOInterface $io)
     {
         $this->composer = $composer;
+        $this->io       = $io;
     }
 
     /**
@@ -182,6 +188,7 @@ class ExcludeFilePlugin implements
 
         // Skip misconfigured or empty packages
         if (isset($autoload[$type]) && is_array($autoload[$type])) {
+            $this->io->writeError('<warning>Using the "'.$type.'" property from "autoload" is deprecated and will be removed in mcaskill/composer-exclude-files v2.0. Use the property from "extra" instead.</warning>');
             return $autoload[$type];
         }
 
