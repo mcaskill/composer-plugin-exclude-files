@@ -52,11 +52,11 @@ The resulting effect is the specified files are never included in `vendor/compos
 
 This is licensed under MIT.
 
-[travis-badge]:    https://travis-ci.org/mcaskill/composer-plugin-exclude-files.svg?branch=master
-[coveralls-badge]: https://coveralls.io/repos/github/mcaskill/composer-plugin-exclude-files/badge.svg?branch=master
+[travis-badge]:    https://travis-ci.org/mcaskill/composer-plugin-exclude-files.svg?branch=main
+[coveralls-badge]: https://coveralls.io/repos/github/mcaskill/composer-plugin-exclude-files/badge.svg?branch=main
 [license-badge]:   https://poser.pugx.org/mcaskill/composer-exclude-files/license
 [release-badge]:   https://img.shields.io/github/tag/mcaskill/composer-plugin-exclude-files.svg
 
 [travis-ci.org]:   https://travis-ci.org/mcaskill/composer-plugin-exclude-files
-[coveralls.io]:    https://coveralls.io/github/mcaskill/composer-plugin-exclude-files?branch=master
+[coveralls.io]:    https://coveralls.io/github/mcaskill/composer-plugin-exclude-files?branch=main
 [packagist.org]:   https://packagist.org/packages/mcaskill/composer-exclude-files
