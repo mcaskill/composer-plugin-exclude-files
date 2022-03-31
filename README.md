@@ -5,7 +5,7 @@
 [![License][license-badge]][packagist.org]
 ![GitHub Tag][release-badge]
 
-A Composer plugin for excluding files required by packages using the 'files' autoloading mechanism.
+A Composer plugin for excluding files required by packages using the `files` autoloading mechanism.
 
 This is useful for ignoring files required for bootstrapping a package or that provide PHP functions, for example.
 
@@ -34,7 +34,7 @@ Example:
 ```json
 {
     "require": {
-        "illuminate/support": "^5.5"
+        "illuminate/support": "^9.6"
     },
     "extra": {
         "exclude-from-files": [
