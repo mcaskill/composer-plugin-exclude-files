@@ -6,6 +6,8 @@ env:
   global:
     - COMPOSER_FLAGS="--ansi --no-interaction --no-progress --no-suggest --prefer-dist"
     - COMPOSER_UPDATE_FLAGS=""
+    - PHPUNIT_FLAGS=""
+    - REPORT_COVERAGE=false
     - SYMFONY_PHPUNIT_VERSION=8.5
     - SYMFONY_PHPUNIT_REMOVE_RETURN_TYPEHINT=1
 
@@ -40,6 +42,9 @@ matrix:
       env:
         - COMPOSER_LATEST=true
     - php: 7.4
+      env:
+        - PHPUNIT_FLAGS="--coverage-clover build/logs/clover.xml"
+        - REPORT_COVERAGE=true
     - php: 8.0
       env:
         - SYMFONY_PHPUNIT_VERSION=9.5
@@ -81,8 +86,8 @@ install:
   - composer install $COMPOSER_FLAGS
 
 script:
-  - ./vendor/bin/simple-phpunit
+  - ./vendor/bin/simple-phpunit $PHPUNIT_FLAGS
 
 after_script:
-  - if [[ $TRAVIS_PHP_VERSION == '7.4' ]]; then composer require php-coveralls/php-coveralls; fi
-  - if [[ $TRAVIS_PHP_VERSION == '7.4' ]]; then php vendor/bin/php-coveralls -v; fi
+  - if [[ $REPORT_COVERAGE ]]; then composer require php-coveralls/php-coveralls; fi
+  - if [[ $REPORT_COVERAGE ]]; then php vendor/bin/php-coveralls -v; fi
