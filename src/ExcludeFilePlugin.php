@@ -23,8 +23,8 @@ class ExcludeFilePlugin implements
     PluginInterface,
     EventSubscriberInterface
 {
-    const INCLUDE_FILES_PROPERTY = 'files';
-    const EXCLUDE_FILES_PROPERTY = 'exclude-from-files';
+    public const INCLUDE_FILES_PROPERTY = 'files';
+    public const EXCLUDE_FILES_PROPERTY = 'exclude-from-files';
 
     /**
      * @var Composer
