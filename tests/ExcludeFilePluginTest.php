@@ -26,8 +26,8 @@ use Composer\Util\Filesystem;
 use Composer\Util\Silencer;
 use McAskill\Composer\ExcludeFilePlugin;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\MockObject;
-use UnexpectedValueException;
+use PHPUnit\Framework\MockObject\MockObject;
+use RuntimeException;
 
 class ExcludeFilePluginTest extends TestCase
 {
@@ -76,7 +76,7 @@ class ExcludeFilePluginTest extends TestCase
      */
     private $io;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $that = $this;
 
@@ -116,7 +116,7 @@ class ExcludeFilePluginTest extends TestCase
         $this->composer = $composer;
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         chdir($this->origDir);
 
@@ -125,7 +125,7 @@ class ExcludeFilePluginTest extends TestCase
         }
     }
 
-    public function testAutoloadDump()
+    public function testAutoloadDump(): void
     {
         $plugin = new ExcludeFilePlugin();
         $plugin->activate($this->composer, $this->io);
@@ -178,7 +178,7 @@ class ExcludeFilePluginTest extends TestCase
     /**
      * @return RootPackage
      */
-    protected function createRootPackage()
+    protected function createRootPackage(): RootPackage
     {
         $rootPackage = new RootPackage('a', '1.0', '1.0');
         $rootPackage->setRequires([
@@ -193,7 +193,7 @@ class ExcludeFilePluginTest extends TestCase
     /**
      * @return \Composer\Package\PackageInterface[]
      */
-    protected function createPackages()
+    protected function createPackages(): array
     {
         $packages = [];
 
@@ -220,7 +220,7 @@ class ExcludeFilePluginTest extends TestCase
     /**
      * @return MockObject<\Composer\EventDispatcher\EventDispatcher>
      */
-    protected function createMockEventDispatcher()
+    protected function createMockEventDispatcher(): MockObject
     {
         $ed = $this->getMockBuilder('Composer\EventDispatcher\EventDispatcher')
                    ->disableOriginalConstructor()
@@ -232,7 +232,7 @@ class ExcludeFilePluginTest extends TestCase
     /**
      * @return MockObject<\Composer\IO\IOInterface>
      */
-    protected function createMockIOInterface()
+    protected function createMockIOInterface(): MockObject
     {
         $io = $this->getMockBuilder('Composer\IO\IOInterface')->getMock();
 
@@ -242,7 +242,7 @@ class ExcludeFilePluginTest extends TestCase
     /**
      * @return MockObject<\Composer\Installer\InstallationManager>
      */
-    protected function createMockInstallationManager()
+    protected function createMockInstallationManager(): MockObject
     {
         $test = $this;
 
@@ -264,7 +264,7 @@ class ExcludeFilePluginTest extends TestCase
     /**
      * @return MockObject<\Composer\Repository\RepositoryManager>
      */
-    protected function createMockRepositoryManager(InstalledRepositoryInterface $localRepo)
+    protected function createMockRepositoryManager(InstalledRepositoryInterface $localRepo): MockObject
     {
         $rm = $this->getMockBuilder('Composer\Repository\RepositoryManager')
             ->disableOriginalConstructor()
@@ -279,8 +279,10 @@ class ExcludeFilePluginTest extends TestCase
 
     /**
      * @see \Composer\TestCase::getUniqueTmpDirectory()
+     *
+     * @throws RuntimeException
      */
-    protected function getUniqueTmpDirectory()
+    protected function getUniqueTmpDirectory(): string
     {
         $attempts = 5;
         $root = sys_get_temp_dir();
@@ -293,13 +295,13 @@ class ExcludeFilePluginTest extends TestCase
             }
         } while (--$attempts);
 
-        throw new \RuntimeException('Failed to create a unique temporary directory.');
+        throw new RuntimeException('Failed to create a unique temporary directory.');
     }
 
     /**
      * @see \Composer\TestCase::ensureDirectoryExistsAndClear()
      */
-    protected function ensureDirectoryExistsAndClear($directory)
+    protected function ensureDirectoryExistsAndClear(string $directory): void
     {
         $fs = new Filesystem();
 
@@ -313,24 +315,27 @@ class ExcludeFilePluginTest extends TestCase
     /**
      * @see \Composer\Test\Autoload\AutoloadGeneratorTest::assertAutoloadFiles()
      */
-    public function assertAutoloadFiles($fixture, $dir, $type = 'namespaces')
-    {
+    public function assertAutoloadFiles(
+        string $fixture,
+        string $dir,
+        string $type = 'namespaces'
+    ): void {
         $a = __DIR__ . '/Fixtures/autoload_' . $fixture . '.php';
         $b = $dir . '/autoload_' . $type . '.php';
-        $this->assertFileContentEquals($a, $b);
+        static::assertFileContentEquals($a, $b);
     }
 
     /**
      * @see \Composer\Test\Autoload\AutoloadGeneratorTest::assertFileContentEquals()
      */
     public static function assertFileContentEquals(
-        $expected,
-        $actual,
-        $message = '',
-        $canonicalize = false,
-        $ignoreCase = false
-    ) {
-        return self::assertEqualsNormalized(
+        string $expected,
+        string $actual,
+        string $message = '',
+        bool $canonicalize = false,
+        bool $ignoreCase = false
+    ): void {
+        static::assertEqualsNormalized(
             file_get_contents($expected),
             file_get_contents($actual),
             ($message ?: $expected . ' equals ' . $actual),
@@ -345,15 +350,15 @@ class ExcludeFilePluginTest extends TestCase
      * @see \Composer\Test\Autoload\AutoloadGeneratorTest::assertEqualsNormalized()
      */
     public static function assertEqualsNormalized(
-        $expected,
-        $actual,
-        $message = '',
-        $delta = 0,
-        $maxDepth = 10,
-        $canonicalize = false,
-        $ignoreCase = false
-    ) {
-        return parent::assertEquals(
+        string $expected,
+        string $actual,
+        string $message = '',
+        int $delta = 0,
+        int $maxDepth = 10,
+        bool $canonicalize = false,
+        bool $ignoreCase = false
+    ): void {
+        static::assertEquals(
             str_replace("\r", '', $expected),
             str_replace("\r", '', $actual),
             $message,

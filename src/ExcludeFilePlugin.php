@@ -38,7 +38,7 @@ class ExcludeFilePlugin implements
      * @param  IOInterface $io       The Input/Output instance.
      * @return void
      */
-    public function activate(Composer $composer, IOInterface $io)
+    public function activate(Composer $composer, IOInterface $io): void
     {
         $this->composer = $composer;
     }
@@ -52,7 +52,7 @@ class ExcludeFilePlugin implements
      * @param  IOInterface $io       The Input/Output instance.
      * @return void
      */
-    public function deactivate(Composer $composer, IOInterface $io)
+    public function deactivate(Composer $composer, IOInterface $io): void
     {
         // no need to deactivate anything
     }
@@ -66,7 +66,7 @@ class ExcludeFilePlugin implements
      * @param  IOInterface $io       The Input/Output instance.
      * @return void
      */
-    public function uninstall(Composer $composer, IOInterface $io)
+    public function uninstall(Composer $composer, IOInterface $io): void
     {
         // no need to uninstall anything
     }
@@ -76,7 +76,7 @@ class ExcludeFilePlugin implements
      *
      * @return array The event names to listen to.
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ScriptEvents::PRE_AUTOLOAD_DUMP => 'parseAutoloads',
@@ -92,14 +92,11 @@ class ExcludeFilePlugin implements
      *
      * @return void
      */
-    public function parseAutoloads()
+    public function parseAutoloads(): void
     {
         $composer = $this->composer;
 
         $package = $composer->getPackage();
-        if (!$package) {
-            return;
-        }
 
         $excludedFiles = $this->parseExcludedFiles($this->getExcludedFiles($package));
         if (!$excludedFiles) {
@@ -121,7 +118,7 @@ class ExcludeFilePlugin implements
      * @param  string[]         $excludedFiles The files to exclude from the "files" autoload mechanism.
      * @return void
      */
-    private function filterAutoloads(array $packageMap, PackageInterface $mainPackage, array $excludedFiles)
+    private function filterAutoloads(array $packageMap, PackageInterface $mainPackage, array $excludedFiles): void
     {
         $excludedFiles = array_flip($excludedFiles);
 
@@ -170,7 +167,7 @@ class ExcludeFilePlugin implements
      * @param  PackageInterface $package Root package instance.
      * @return string[] Retuns the list of excluded files otherwise NULL if misconfigured or undefined.
      */
-    private function getExcludedFiles(PackageInterface $package)
+    private function getExcludedFiles(PackageInterface $package): array
     {
         $type = self::EXCLUDE_FILES_PROPERTY;
 
@@ -189,7 +186,7 @@ class ExcludeFilePlugin implements
      * @param  string[] $paths Array of paths relative to the composer manifest.
      * @return string[] Retuns the array of paths, prepended with the vendor directory.
      */
-    private function parseExcludedFiles(array $paths)
+    private function parseExcludedFiles(array $paths): array
     {
         if (empty($paths)) {
             return $paths;
