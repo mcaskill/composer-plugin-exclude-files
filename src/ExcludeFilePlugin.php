@@ -78,9 +78,9 @@ class ExcludeFilePlugin implements
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             ScriptEvents::PRE_AUTOLOAD_DUMP => 'parseAutoloads',
-        );
+        ];
     }
 
     /**
@@ -180,7 +180,7 @@ class ExcludeFilePlugin implements
             return $extra[$type];
         }
 
-        return array();
+        return [];
     }
 
     /**

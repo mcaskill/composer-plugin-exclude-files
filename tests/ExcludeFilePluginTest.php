@@ -107,11 +107,11 @@ class ExcludeFilePluginTest extends TestCase
         $this->generator = new AutoloadGenerator($ed);
 
         $this->config = new Config(false);
-        $this->config->merge(array(
-            'config' => array(
+        $this->config->merge([
+            'config' => [
                 'vendor-dir' => $this->vendorDir,
-            ),
-        ));
+            ],
+        ]);
 
         $composer = new Composer();
         $composer->setConfig($this->config);
@@ -164,12 +164,12 @@ class ExcludeFilePluginTest extends TestCase
         // Check standard autoload
         $this->assertAutoloadFiles('files1', $this->vendorDir . '/composer', 'files');
 
-        $rootPackage->setExtra(array(
-            'exclude-from-files' => array(
+        $rootPackage->setExtra([
+            'exclude-from-files' => [
                 'b/b/test2.php',
                 'c/c/foo/bar/test3.php',
-            ),
-        ));
+            ],
+        ]);
 
         // 4. Check plugin filters autoloads if the root package
         // excludes files from "extra" section
@@ -187,11 +187,11 @@ class ExcludeFilePluginTest extends TestCase
     protected function createRootPackage()
     {
         $rootPackage = new RootPackage('a', '1.0', '1.0');
-        $rootPackage->setRequires(array(
+        $rootPackage->setRequires([
             'a/a' => new Link('a', 'a/a', $this->createConstraint()),
             'b/b' => new Link('a', 'b/b', $this->createConstraint()),
             'c/c' => new Link('a', 'c/c', $this->createConstraint()),
-        ));
+        ]);
 
         return $rootPackage;
     }
@@ -201,7 +201,7 @@ class ExcludeFilePluginTest extends TestCase
      */
     protected function createPackages()
     {
-        $packages = array();
+        $packages = [];
 
         $packages[] = $a = new Package('a/a', '1.0', '1.0');
         $packages[] = $b = new Package('b/b', '1.0', '1.0');
@@ -209,16 +209,16 @@ class ExcludeFilePluginTest extends TestCase
         $packages[] = $d = new Package('d/d', '1.0', '1.0');
         $packages[] = $e = new Package('e/e', '1.0', '1.0');
 
-        $a->setAutoload(array( 'files' => array( 'test.php' ) ));
-        $b->setAutoload(array( 'files' => array( 'test2.php' ) ));
-        $c->setAutoload(array( 'files' => array( 'test3.php', 'foo/bar/test4.php' ) ));
+        $a->setAutoload([ 'files' => [ 'test.php' ] ]);
+        $b->setAutoload([ 'files' => [ 'test2.php' ] ]);
+        $c->setAutoload([ 'files' => [ 'test3.php', 'foo/bar/test4.php' ] ]);
         $c->setTargetDir('foo/bar');
-        $c->setRequires(array(
+        $c->setRequires([
             'd/d' => new Link('c', 'd/d', $this->createConstraint())
-        ));
-        $d->setRequires(array(
+        ]);
+        $d->setRequires([
             'e/e' => new Link('d', 'e/e', $this->createConstraint())
-        ));
+        ]);
 
         return $packages;
     }
