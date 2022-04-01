@@ -58,6 +58,7 @@ matrix:
         - SYMFONY_PHPUNIT_VERSION=9.5
   fast_finish: true
   allow_failures:
+    - php: 5.3
     - php: nightly
 
 branches:
@@ -69,6 +70,13 @@ cache:
     - $HOME/.composer/cache
 
 before_install:
+  # In September 2021, the Let's encrypt root authority certificate expired,
+  # which invalidates Composer's certificates.
+  - if [[ $TRAVIS_DIST == 'precise' ]]; then
+      wget https://curl.se/ca/cacert.pem -O /tmp/cacert.pem --no-check-certificate;
+      echo "openssl.cafile=/tmp/cacert.pem" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini;
+    fi
+  # Update Composer to the latest supported version
   - composer self-update
 
 install:
