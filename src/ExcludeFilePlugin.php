@@ -123,10 +123,6 @@ class ExcludeFilePlugin implements
      */
     private function filterAutoloads(array $packageMap, PackageInterface $mainPackage, array $excludedFiles)
     {
-        if (empty($excludedFiles)) {
-            return;
-        }
-
         $excludedFiles = array_flip($excludedFiles);
 
         $type = self::INCLUDE_FILES_PROPERTY;
