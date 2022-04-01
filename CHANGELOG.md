@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.0] — 2022-06-24
+
+* BC Break: Minimum supported Composer plugin API version is now 2.3.0
+* BC Break: Minimum supported PHP version is now 7.2.5
+* BC Break: Added native parameter & return types
+* Improved logic of plugin
+* Cleaned-up tests
+
 ## [2.1.0] — 2022-04-01
 
 * Fixed tests against Composer 1.0–2.3
@@ -36,7 +44,8 @@
 
 * Initial release.
 
-[Unreleased]: https://github.com/mcaskill/composer-plugin-exclude-files/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/mcaskill/composer-plugin-exclude-files/compare/v3.0.0...HEAD
+[3.0.0]:      https://github.com/mcaskill/composer-plugin-exclude-files/compare/v2.1.0...v3.0.0
 [2.1.0]:      https://github.com/mcaskill/composer-plugin-exclude-files/compare/v2.0.0...v2.1.0
 [2.0.0]:      https://github.com/mcaskill/composer-plugin-exclude-files/compare/v1.3.0...v2.0.0
 [1.3.0]:      https://github.com/mcaskill/composer-plugin-exclude-files/compare/v1.2.0...v1.3.0
