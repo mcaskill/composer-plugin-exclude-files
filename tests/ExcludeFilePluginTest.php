@@ -315,16 +315,7 @@ class ExcludeFilePluginTest extends TestCase
      */
     public function assertAutoloadFiles($fixture, $dir, $type = 'namespaces')
     {
-        // Maintain support for Composer v1–v2.2
-        // See: https://github.com/composer/composer/commit/4fdc8b8
-        // See: https://github.com/composer/composer/pull/10428
-        if (version_compare(PluginInterface::PLUGIN_API_VERSION, '2.3.0', '<')) {
-            $suffix = '_php52';
-        } else {
-            $suffix = '';
-        }
-
-        $a = __DIR__ . '/Fixtures/autoload_' . $fixture . $suffix . '.php';
+        $a = __DIR__ . '/Fixtures/autoload_' . $fixture . '.php';
         $b = $dir . '/autoload_' . $type . '.php';
         $this->assertFileContentEquals($a, $b);
     }
