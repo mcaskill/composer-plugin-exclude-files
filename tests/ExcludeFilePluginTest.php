@@ -20,7 +20,6 @@ use Composer\Package\RootPackage;
 use Composer\Plugin\PluginInterface;
 use Composer\Repository\InstalledArrayRepository;
 use Composer\Repository\InstalledRepositoryInterface;
-use Composer\Semver\Constraint\EmptyConstraint;
 use Composer\Semver\Constraint\MatchAllConstraint;
 use Composer\Script\ScriptEvents;
 use Composer\Util\Filesystem;
@@ -61,11 +60,6 @@ class ExcludeFilePluginTest extends TestCase
      * @var AutoloadGenerator
      */
     private $generator;
-
-    /**
-     * @var Closure<\Composer\Semver\Constraint\ConstraintInterface>
-     */
-    private $constraintFactory;
 
     /**
      * @var Filesystem
@@ -188,9 +182,9 @@ class ExcludeFilePluginTest extends TestCase
     {
         $rootPackage = new RootPackage('a', '1.0', '1.0');
         $rootPackage->setRequires([
-            'a/a' => new Link('a', 'a/a', $this->createConstraint()),
-            'b/b' => new Link('a', 'b/b', $this->createConstraint()),
-            'c/c' => new Link('a', 'c/c', $this->createConstraint()),
+            'a/a' => new Link('a', 'a/a', new MatchAllConstraint()),
+            'b/b' => new Link('a', 'b/b', new MatchAllConstraint()),
+            'c/c' => new Link('a', 'c/c', new MatchAllConstraint()),
         ]);
 
         return $rootPackage;
@@ -214,60 +208,13 @@ class ExcludeFilePluginTest extends TestCase
         $c->setAutoload([ 'files' => [ 'test3.php', 'foo/bar/test4.php' ] ]);
         $c->setTargetDir('foo/bar');
         $c->setRequires([
-            'd/d' => new Link('c', 'd/d', $this->createConstraint())
+            'd/d' => new Link('c', 'd/d', new MatchAllConstraint())
         ]);
         $d->setRequires([
-            'e/e' => new Link('d', 'e/e', $this->createConstraint())
+            'e/e' => new Link('d', 'e/e', new MatchAllConstraint())
         ]);
 
         return $packages;
-    }
-
-    /**
-     * @return \Composer\Semver\Constraint\ConstraintInterface
-     */
-    protected function createConstraint()
-    {
-        $factory = $this->getConstraintFactory();
-
-        return $factory();
-    }
-
-    /**
-     * @throws UnexpectedValueException
-     * @return Closure<\Composer\Semver\Constraint\ConstraintInterface>
-     */
-    protected function createConstraintFactory()
-    {
-        if (class_exists('Composer\\Semver\\Constraint\\MatchAllConstraint')) {
-            return function () {
-                return new MatchAllConstraint();
-            };
-        }
-
-        if (class_exists('Composer\\Semver\\Constraint\\EmptyConstraint')) {
-            return function () {
-                return new EmptyConstraint();
-            };
-        }
-
-        throw new UnexpectedValueException(sprintf(
-            'Expected either [%s] or [%s] (for Composer 1)',
-            'Composer\\Semver\\Constraint\\MatchAllConstraint',
-            'Composer\\Semver\\Constraint\\EmptyConstraint'
-        ));
-    }
-
-    /**
-     * @return Closure<\Composer\Semver\Constraint\ConstraintInterface>
-     */
-    protected function getConstraintFactory()
-    {
-        if (!$this->constraintFactory) {
-            $this->constraintFactory = $this->createConstraintFactory();
-        }
-
-        return $this->constraintFactory;
     }
 
     /**
