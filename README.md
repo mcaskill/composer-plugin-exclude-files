@@ -25,11 +25,11 @@ $ composer require mcaskill/composer-exclude-files
 > File exclusions of dependencies' `composer.json`s are ignored.
 
 From your main `composer.json`, add the `exclude-from-files` property to the `extra` section.
-The list of paths must be relative to this composer manifest.
+The list of paths must be relative to this composer manifest's vendor directory.
 
 This plugin is invoked before the autoloader is dumped, such as with the commands `install`, `update`, and `dump-autoload`.
 
-Example:
+###### Example 1: Using illuminate/support
 
 ```json
 {
@@ -39,6 +39,21 @@ Example:
     "extra": {
         "exclude-from-files": [
             "illuminate/support/helpers.php"
+        ]
+    }
+}
+```
+
+###### Example 2: Using laravel/framework
+
+```json
+{
+    "require": {
+        "laravel/framework": "^9.6"
+    },
+    "extra": {
+        "exclude-from-files": [
+            "laravel/framework/src/Illuminate/Foundation/helpers.php"
         ]
     }
 }
