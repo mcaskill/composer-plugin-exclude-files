@@ -21,6 +21,13 @@ The plugin can be installed locally or globally.
 composer require mcaskill/composer-exclude-files
 ```
 
+As of Composer 2.2.0, for [additional security][composer-allow-plugins], you
+should declare the `allow-plugins` config to allow Composer to run the plugin.
+
+```shell
+composer config allow-plugins.mcaskill/composer-exclude-files true
+```
+
 ## Usage
 
 > You can only ignore files from the root `composer.json`.
@@ -44,6 +51,11 @@ commands `install`, `update`, and `dump-autoload`.
         "exclude-from-files": [
             "illuminate/support/helpers.php"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "mcaskill/composer-exclude-files": true
+        }
     }
 }
 ```
@@ -59,6 +71,11 @@ commands `install`, `update`, and `dump-autoload`.
         "exclude-from-files": [
             "laravel/framework/src/Illuminate/Foundation/helpers.php"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "mcaskill/composer-exclude-files": true
+        }
     }
 }
 ```
@@ -73,6 +90,8 @@ The resulting effect is the specified files are never included in
 ## License
 
 This is licensed under MIT.
+
+[composer-allow-plugins]: https://getcomposer.org/allow-plugins
 
 [travis-badge]:    https://app.travis-ci.com/mcaskill/composer-plugin-exclude-files.svg?branch=main
 [coveralls-badge]: https://coveralls.io/repos/github/mcaskill/composer-plugin-exclude-files/badge.svg?branch=main
