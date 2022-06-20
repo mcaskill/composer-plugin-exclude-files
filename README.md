@@ -5,9 +5,11 @@
 [![License][license-badge]][packagist.org]
 ![GitHub Tag][release-badge]
 
-A Composer plugin for excluding files required by packages using the `files` autoloading mechanism.
+A Composer plugin for excluding files required by packages using the `files`
+autoloading mechanism.
 
-This is useful for ignoring files required for bootstrapping a package or that provide PHP functions, for example.
+This is useful for ignoring files required for bootstrapping a package or that
+provide PHP functions, for example.
 
 Resolves [composer/composer#5029](//github.com/composer/composer/issues/5029)
 
@@ -15,19 +17,21 @@ Resolves [composer/composer#5029](//github.com/composer/composer/issues/5029)
 
 The plugin can be installed locally or globally.
 
-```console
-$ composer require mcaskill/composer-exclude-files
+```shell
+composer require mcaskill/composer-exclude-files
 ```
 
 ## Usage
 
-> You can only ignore files from your main `composer.json`.
-> File exclusions of dependencies' `composer.json`s are ignored.
+> You can only ignore files from the root `composer.json`.
+> File exclusions of dependencies' `composer.json` are ignored.
 
-From your main `composer.json`, add the `exclude-from-files` property to the `extra` section.
-The list of paths must be relative to this composer manifest's vendor directory.
+From the root `composer.json`, add the `exclude-from-files` property to the
+`extra` section. The list of paths must be relative to this composer manifest's
+vendor directory.
 
-This plugin is invoked before the autoloader is dumped, such as with the commands `install`, `update`, and `dump-autoload`.
+This plugin is invoked before the autoloader is dumped, such as with the
+commands `install`, `update`, and `dump-autoload`.
 
 ###### Example 1: Using illuminate/support
 
@@ -59,9 +63,12 @@ This plugin is invoked before the autoloader is dumped, such as with the command
 }
 ```
 
-The plugin will traverse each package and remove all files in the paths configured above from the prepared autoload map. The vendor files themselves are not removed. The root package is ignored.
+The plugin will traverse each package and remove all files in the paths
+configured above from the prepared autoload map. The vendor files themselves
+are not removed. The root package is ignored.
 
-The resulting effect is the specified files are never included in `vendor/composer/autoload_files.php`.
+The resulting effect is the specified files are never included in
+`vendor/composer/autoload_files.php`.
 
 ## License
 
