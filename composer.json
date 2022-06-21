@@ -15,7 +15,8 @@
     },
     "require-dev": {
         "composer/composer": "^2.3",
-        "symfony/phpunit-bridge": "^6.0"
+        "symfony/phpunit-bridge": "^6.0",
+        "phpstan/phpstan": "^1.7"
     },
     "autoload": {
         "psr-4": {
@@ -40,10 +41,12 @@
         "platform-check": false
     },
     "scripts": {
-        "test": "simple-phpunit"
+        "lint-phpstan": "@php vendor/bin/phpstan analyse",
+        "test-phpunit": "@php simple-phpunit"
     },
     "scripts-descriptions": {
-        "test": "Run all tests"
+        "lint-phpstan": "Runs PHPStan",
+        "test-phpunit": "Run all tests"
     },
     "minimum-stability": "dev",
     "prefer-stable": true
