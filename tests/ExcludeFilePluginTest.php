@@ -67,25 +67,31 @@ class ExcludeFilePluginTest extends TestCase
     private $fs;
 
     /**
-     * @var MockObject<\Composer\Installer\InstallationManager>
+     * @var \Composer\Installer\InstallationManager&MockObject
      */
     private $im;
 
     /**
-     * @var MockObject<\Composer\IO\IOInterface>
+     * @var \Composer\IO\IOInterface&MockObject
      */
     private $io;
 
+    /**
+     * @throws RuntimeException
+     */
     protected function setUp(): void
     {
-        $that = $this;
+        if (!($cwd = getcwd())) {
+            throw new RuntimeException(
+                'Failed to retrieve the current working directory'
+            );
+        }
+        $this->origDir = $cwd;
 
         $this->fs = new Filesystem;
 
         $this->vendorDir = $this->getUniqueTmpDirectory();
         $this->ensureDirectoryExistsAndClear($this->vendorDir);
-
-        $this->origDir = getcwd();
         chdir($this->vendorDir);
 
         $this->io = $this->createMockIOInterface();
@@ -218,7 +224,7 @@ class ExcludeFilePluginTest extends TestCase
     }
 
     /**
-     * @return MockObject<\Composer\EventDispatcher\EventDispatcher>
+     * @return \Composer\EventDispatcher\EventDispatcher&MockObject
      */
     protected function createMockEventDispatcher(): MockObject
     {
@@ -230,7 +236,7 @@ class ExcludeFilePluginTest extends TestCase
     }
 
     /**
-     * @return MockObject<\Composer\IO\IOInterface>
+     * @return \Composer\IO\IOInterface&MockObject
      */
     protected function createMockIOInterface(): MockObject
     {
@@ -240,7 +246,7 @@ class ExcludeFilePluginTest extends TestCase
     }
 
     /**
-     * @return MockObject<\Composer\Installer\InstallationManager>
+     * @return \Composer\Installer\InstallationManager&MockObject
      */
     protected function createMockInstallationManager(): MockObject
     {
@@ -262,7 +268,7 @@ class ExcludeFilePluginTest extends TestCase
     }
 
     /**
-     * @return MockObject<\Composer\Repository\RepositoryManager>
+     * @return \Composer\Repository\RepositoryManager&MockObject
      */
     protected function createMockRepositoryManager(InstalledRepositoryInterface $localRepo): MockObject
     {
@@ -291,11 +297,15 @@ class ExcludeFilePluginTest extends TestCase
             $unique = $root . DIRECTORY_SEPARATOR . uniqid('composer-test-' . rand(1000, 9000));
 
             if (!file_exists($unique) && Silencer::call('mkdir', $unique, 0777)) {
-                return realpath($unique);
+                if ($unique = realpath($unique)) {
+                    return $unique;
+                }
             }
         } while (--$attempts);
 
-        throw new RuntimeException('Failed to create a unique temporary directory.');
+        throw new RuntimeException(
+            'Failed to create a unique temporary directory'
+        );
     }
 
     /**
@@ -331,18 +341,12 @@ class ExcludeFilePluginTest extends TestCase
     public static function assertFileContentEquals(
         string $expected,
         string $actual,
-        string $message = '',
-        bool $canonicalize = false,
-        bool $ignoreCase = false
+        string $message = ''
     ): void {
         static::assertEqualsNormalized(
-            file_get_contents($expected),
-            file_get_contents($actual),
-            ($message ?: $expected . ' equals ' . $actual),
-            0,
-            10,
-            $canonicalize,
-            $ignoreCase
+            (string) file_get_contents($expected),
+            (string) file_get_contents($actual),
+            ($message ?: $expected . ' equals ' . $actual)
         );
     }
 
@@ -352,20 +356,12 @@ class ExcludeFilePluginTest extends TestCase
     public static function assertEqualsNormalized(
         string $expected,
         string $actual,
-        string $message = '',
-        int $delta = 0,
-        int $maxDepth = 10,
-        bool $canonicalize = false,
-        bool $ignoreCase = false
+        string $message = ''
     ): void {
         static::assertEquals(
             str_replace("\r", '', $expected),
             str_replace("\r", '', $actual),
-            $message,
-            $delta,
-            $maxDepth,
-            $canonicalize,
-            $ignoreCase
+            $message
         );
     }
 }
