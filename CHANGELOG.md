@@ -1,11 +1,13 @@
 # Changelog
 
-## [3.0.0] — 2022-06-24
+## [Unreleased]
 
 * BC Break: Minimum supported Composer plugin API version is now 2.3.0
+  (see [release for Composer 2.3.0](https://github.com/composer/composer/releases/tag/2.3.0))
 * BC Break: Minimum supported PHP version is now 7.2.5
 * BC Break: Added native parameter & return types
 * Improved logic of plugin
+* Add PHPStan and Psalm for static analysis
 * Cleaned-up tests
 
 ## [2.1.0] — 2022-04-01
