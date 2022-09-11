@@ -1,7 +1,6 @@
 # Exclude PHP files from Composer
 
-[![Build Status][travis-badge]][travis-ci.com]
-[![Coverage Status][coveralls-badge]][coveralls.io]
+[![Build Status][github-badge]][github-actions]
 [![License][license-badge]][packagist.org]
 ![GitHub Tag][release-badge]
 
@@ -93,11 +92,9 @@ This is licensed under MIT.
 
 [composer-allow-plugins]: https://getcomposer.org/allow-plugins
 
-[travis-badge]:    https://app.travis-ci.com/mcaskill/composer-plugin-exclude-files.svg?branch=main
-[coveralls-badge]: https://coveralls.io/repos/github/mcaskill/composer-plugin-exclude-files/badge.svg?branch=main
+[github-badge]:    https://img.shields.io/github/workflow/status/mcaskill/composer-plugin-exclude-files/Test?label=build
 [license-badge]:   https://poser.pugx.org/mcaskill/composer-exclude-files/license
 [release-badge]:   https://img.shields.io/github/tag/mcaskill/composer-plugin-exclude-files.svg
 
-[travis-ci.com]:   https://app.travis-ci.com/github/mcaskill/composer-plugin-exclude-files
-[coveralls.io]:    https://coveralls.io/github/mcaskill/composer-plugin-exclude-files?branch=main
+[github-actions]:  https://github.com/mcaskill/composer-plugin-exclude-files/actions
 [packagist.org]:   https://packagist.org/packages/mcaskill/composer-exclude-files
