@@ -237,7 +237,9 @@ class ExcludeFilePlugin implements
         // Do not remove double realpath() calls.
         // Fixes failing Windows realpath() implementation.
         // See https://bugs.php.net/bug.php?id=72738
-        $vendorPath = $filesystem->normalizePath(realpath(realpath($vendorDir)));
+        /** @var string */
+        $vendorPath = realpath(realpath($vendorDir));
+        $vendorPath = $filesystem->normalizePath($vendorPath);
 
         foreach ($paths as &$path) {
             $path = preg_replace('{/+}', '/', trim(strtr($path, '\\', '/'), '/'));
