@@ -14,7 +14,7 @@
         "composer-plugin-api": "^2.3"
     },
     "require-dev": {
-        "composer/composer": "@dev",
+        "composer/composer": "^2.3",
         "symfony/phpunit-bridge": "^6.0",
         "phpstan/phpstan": "^1.7"
     },
