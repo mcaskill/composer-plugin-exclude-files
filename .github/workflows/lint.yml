@@ -1,5 +1,12 @@
 name: "Lint"
 
+#
+# Based on workflows from Composer:
+# 
+# * https://github.com/composer/composer/blob/2.4.1/.github/workflows/lint.yml
+# * https://github.com/composer/composer/blob/2.4.1/.github/workflows/phpstan.yml
+#
+
 on:
   push:
     paths-ignore:
@@ -61,7 +68,7 @@ jobs:
       - name: "Checkout"
         uses: "actions/checkout@v3"
 
-      - name: "Install PHP"
+      - name: "Setup PHP"
         uses: "shivammathur/setup-php@v2"
         with:
           coverage: "none"
@@ -69,22 +76,22 @@ jobs:
           ini-values: "memory_limit=-1"
           php-version: "${{ matrix.php-version }}"
 
-      - name: "Determine composer cache directory"
+      - name: "Determine Composer cache directory"
         id: "determine-composer-cache-directory"
         run: "echo \"::set-output name=directory::$(composer config cache-dir)\""
 
-      - name: "Cache dependencies installed with composer"
-        uses: "actions/cache@v2"
+      - name: "Cache dependencies installed with Composer"
+        uses: "actions/cache@v3"
         with:
           path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
           key: "php-${{ matrix.php-version }}-symfony-php-unit-version-${{ env.SYMFONY_PHPUNIT_VERSION }}-${{ hashFiles('**/composer.lock') }}"
           restore-keys: "php-${{ matrix.php-version }}-symfony-php-unit-version-${{ env.SYMFONY_PHPUNIT_VERSION }}"
 
-      - name: "Install highest dependencies"
+      - name: "Update dependencies from composer.json"
         if: "matrix.experimental == true"
         run: "composer config platform --unset && composer update ${{ env.COMPOSER_FLAGS }}"
 
-      - name: "Install locked dependencies"
+      - name: "Install dependencies from composer.lock"
         if: "matrix.experimental == false"
         run: "composer config platform --unset && composer install ${{ env.COMPOSER_FLAGS }}"
 

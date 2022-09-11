@@ -1,5 +1,12 @@
 name: "Test"
 
+#
+# Based on workflows from Composer:
+# 
+# * https://github.com/composer/composer/blob/2.4.1/.github/workflows/continuous-integration.yml
+# * https://github.com/composer/installers/blob/v2.2.0/.github/workflows/continuous-integration.yml
+#
+
 on:
   push:
     paths-ignore:
@@ -70,7 +77,7 @@ jobs:
       - name: "Checkout"
         uses: "actions/checkout@v3"
 
-      - name: "Install PHP"
+      - name: "Setup PHP"
         uses: "shivammathur/setup-php@v2"
         with:
           coverage: "none"
@@ -118,7 +125,7 @@ jobs:
       - name: "Checkout"
         uses: "actions/checkout@v3"
 
-      - name: "Install PHP"
+      - name: "Setup PHP"
         uses: "shivammathur/setup-php@v2"
         with:
           coverage: "none"
@@ -127,7 +134,7 @@ jobs:
           php-version: "7.4"
           tools: composer
 
-      - name: "Install dependencies"
+      - name: "Install dependencies from composer.lock"
         run: "composer install ${{ env.COMPOSER_FLAGS }}"
 
       - name: "Validate composer.json"
