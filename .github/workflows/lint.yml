@@ -92,4 +92,4 @@ jobs:
         run: "vendor/bin/simple-phpunit --filter NO_TEST_JUST_AUTOLOAD_THANKS"
 
       - name: "Run PHPStan"
-        run: "composer lint-phpstan"
+        run: "composer lint:phpstan"

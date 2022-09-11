@@ -41,12 +41,18 @@
         "platform-check": false
     },
     "scripts": {
-        "lint-phpstan": "@php vendor/bin/phpstan analyse",
-        "test-phpunit": "@php simple-phpunit"
+        "lint": [
+            "@lint:phpstan"
+        ],
+        "test": [
+            "@test:phpunit"
+        ],
+        "lint:phpstan": "@php vendor/bin/phpstan analyse",
+        "test:phpunit": "@php simple-phpunit"
     },
     "scripts-descriptions": {
-        "lint-phpstan": "Runs PHPStan",
-        "test-phpunit": "Run all tests"
+        "lint:phpstan": "Run static code analysis with PHPStan",
+        "test:phpunit": "Run all tests with PHPUnit"
     },
     "minimum-stability": "dev",
     "prefer-stable": true
