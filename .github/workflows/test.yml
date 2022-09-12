@@ -11,9 +11,13 @@ on:
   push:
     paths-ignore:
       - 'docs/**'
+    tags-ignore:
+      - '**'
   pull_request:
     paths-ignore:
       - 'docs/**'
+    tags-ignore:
+      - '**'
 
 env:
   COMPOSER_FLAGS: "--ansi --no-interaction --no-progress --prefer-dist"
