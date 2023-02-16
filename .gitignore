@@ -1,6 +1,11 @@
+# Directories
+/vendor/
+
+# Files
 .php_cs
 .php_cs.cache
 .phpunit.result.cache
-composer.phar
+phpcs.xml
+phpstan.neon
 phpunit.xml
-/vendor/
+psalm.xml
