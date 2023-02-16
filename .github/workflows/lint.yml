@@ -3,8 +3,8 @@ name: "Lint"
 #
 # Based on workflows from Composer:
 # 
-# * https://github.com/composer/composer/blob/2.4.1/.github/workflows/lint.yml
-# * https://github.com/composer/composer/blob/2.4.1/.github/workflows/phpstan.yml
+# * https://github.com/composer/composer/blob/2.5.4/.github/workflows/lint.yml
+# * https://github.com/composer/composer/blob/2.5.4/.github/workflows/phpstan.yml
 #
 
 on:
@@ -61,12 +61,9 @@ jobs:
 
     strategy:
       matrix:
-        include:
-          - php-version: "7.2"
-            experimental: false
-          - php-version: "8.1"
-            experimental: true
-      fail-fast: false
+        php-version:
+          - "7.2"
+          - "latest"
 
     steps:
       - name: "Checkout"
@@ -82,7 +79,7 @@ jobs:
 
       - name: "Determine Composer cache directory"
         id: "determine-composer-cache-directory"
-        run: "echo \"::set-output name=directory::$(composer config cache-dir)\""
+        run: "echo \"directory=$(composer config cache-dir)\" >> $GITHUB_OUTPUT"
 
       - name: "Cache dependencies installed with Composer"
         uses: "actions/cache@v3"
