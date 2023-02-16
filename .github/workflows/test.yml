@@ -3,7 +3,7 @@ name: "Test"
 #
 # Based on workflows from Composer:
 # 
-# * https://github.com/composer/composer/blob/2.4.1/.github/workflows/continuous-integration.yml
+# * https://github.com/composer/composer/blob/2.5.4/.github/workflows/continuous-integration.yml
 # * https://github.com/composer/installers/blob/v2.2.0/.github/workflows/continuous-integration.yml
 #
 
@@ -30,9 +30,6 @@ jobs:
   tests:
     name: "Test"
 
-    runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.experimental }}
-
     strategy:
       matrix:
         php-version:
@@ -41,41 +38,49 @@ jobs:
           - "7.4"
           - "8.0"
           - "8.1"
+          - "8.2"
+        composer-version:
+          - "v2"
         dependencies:
-          - locked
+          - "locked"
         os:
-          - ubuntu-latest
+          - "ubuntu-latest"
         experimental:
           - false
         include:
-          - php-version: "7.2"
-            dependencies: highest
-            os: ubuntu-latest
-            experimental: false
-          - php-version: "7.2"
-            dependencies: lowest
-            os: ubuntu-latest
+          - php-version: "8.1"
+            composer-version: "v2"
+            dependencies: "locked"
+            os: "windows-latest"
             experimental: false
           - php-version: "8.1"
-            dependencies: highest
-            os: ubuntu-latest
+            composer-version: "v2"
+            dependencies: "locked"
+            os: "macos-latest"
             experimental: false
           - php-version: "8.1"
-            dependencies: locked
-            os: windows-latest
-            experimental: false
-          - php-version: "8.1"
-            dependencies: locked
-            os: macos-latest
-            experimental: false
-          - php-version: "8.2"
-            dependencies: lowest-ignore
-            os: ubuntu-latest
+            composer-version: "preview"
+            dependencies: "locked"
+            os: "ubuntu-latest"
             experimental: true
-          - php-version: "8.2"
-            dependencies: highest-ignore
-            os: ubuntu-latest
+          - php-version: "8.1"
+            composer-version: "snapshot"
+            dependencies: "locked"
+            os: "ubuntu-latest"
             experimental: true
+          - php-version: "8.3"
+            composer-version: "v2"
+            dependencies: "lowest-ignore"
+            os: "ubuntu-latest"
+            experimental: true
+          - php-version: "8.3"
+            composer-version: "v2"
+            dependencies: "highest-ignore"
+            os: "ubuntu-latest"
+            experimental: true
+
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
 
     steps:
       - name: "Checkout"
@@ -88,7 +93,7 @@ jobs:
           extensions: "intl, zip"
           ini-values: "memory_limit=-1, phar.readonly=0, error_reporting=E_ALL, display_errors=On"
           php-version: "${{ matrix.php-version }}"
-          tools: composer
+          tools: "composer:${{ matrix.composer-version }}"
 
       - name: "Handle lowest dependencies update"
         if: "contains(matrix.dependencies, 'lowest')"
