@@ -1,8 +1,8 @@
 # Exclude PHP files from Composer
 
 [![Build Status][github-badge]][github-actions]
+[![Latest Release][release-badge]][github-latest]
 [![License][license-badge]][packagist.org]
-![GitHub Tag][release-badge]
 
 A Composer plugin for excluding files required by packages using the `files`
 autoloading mechanism.
@@ -92,9 +92,10 @@ This is licensed under MIT.
 
 [composer-allow-plugins]: https://getcomposer.org/allow-plugins
 
-[github-badge]:    https://img.shields.io/github/workflow/status/mcaskill/composer-plugin-exclude-files/Test?label=build
+[github-badge]:    https://img.shields.io/github/actions/workflow/status/mcaskill/composer-plugin-exclude-files/test.yml?branch=main
 [license-badge]:   https://poser.pugx.org/mcaskill/composer-exclude-files/license
 [release-badge]:   https://img.shields.io/github/tag/mcaskill/composer-plugin-exclude-files.svg
 
 [github-actions]:  https://github.com/mcaskill/composer-plugin-exclude-files/actions
+[github-latest]:   https://github.com/mcaskill/composer-plugin-exclude-files/releases/latest
 [packagist.org]:   https://packagist.org/packages/mcaskill/composer-exclude-files
