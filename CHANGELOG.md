@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1] — 2023-05-24
+
+* Fixed support for changes to metapackages
+  in [Composer 2.5.6](https://github.com/composer/composer/releases/tag/2.5.6)
+  and [Composer 2.5.7](https://github.com/composer/composer/releases/tag/2.5.7)
+* Update tests
+
 ## [3.0.0] — 2022-09-12
 
 * BC Break: Minimum supported Composer plugin API version is now 2.3.0
