@@ -258,7 +258,11 @@ class ExcludeFilePluginTest extends TestCase
 
         $im->expects($this->any())
             ->method('getInstallPath')
-            ->will($this->returnCallback(function ($package) use ($test) {
+            ->will($this->returnCallback(function ($package) use ($test): ?string {
+                if ($package->getType() === 'metapackage') {
+                    return null;
+                }
+
                 $targetDir = $package->getTargetDir();
 
                 return $test->vendorDir . '/' . $package->getName() . ($targetDir ? '/' . $targetDir : '');

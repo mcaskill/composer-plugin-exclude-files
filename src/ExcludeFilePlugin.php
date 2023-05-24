@@ -115,11 +115,11 @@ class ExcludeFilePlugin implements
      * Alters packages to exclude files required in "autoload.files" by
      * "extra.exclude-from-files".
      *
-     * @param  array<int, array{PackageInterface, string}> $packageMap
+     * @param  array<int, array{PackageInterface, ?string}> $packageMap
      *     List of packages and their installation paths.
-     * @param  RootPackageInterface                        $rootPackage
+     * @param  RootPackageInterface                         $rootPackage
      *     Root package instance.
-     * @param  array<string, true>                         $excludedFiles
+     * @param  array<string, true>                          $excludedFiles
      *     Map of files to exclude from the "files" autoload mechanism.
      * @return void
      */
@@ -136,6 +136,11 @@ class ExcludeFilePlugin implements
 
             // Skip immutable package
             if (!($package instanceof Package)) {
+                continue;
+            }
+
+            // Skip packages that are not installed
+            if (null === $installPath) {
                 continue;
             }
 
