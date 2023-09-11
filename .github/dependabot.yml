@@ -4,3 +4,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly" 
+    groups:
+      github-actions:
+        patterns:
+          - "actions/*"
+          - "shivammathur/*"
+      dev-dependencies:
+        dependency-type: "development"
