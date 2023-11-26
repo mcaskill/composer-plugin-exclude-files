@@ -41,7 +41,7 @@ permissions:
 
 jobs:
   tests:
-    name: "PHP ${{ matrix.php-version }} / Composer ${{ matrix.composer-version }} / OS ${{ matrix.os }}"
+    name: "PHP ${{ matrix.php-version }} / Composer ${{ matrix.composer-version }} / ${{ matrix.os }}"
 
     strategy:
       matrix:
@@ -101,6 +101,7 @@ jobs:
 
       - name: Retrieve Composer cache directory
         id: composer-cache
+        shell: bash
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: "Cache dependencies installed with Composer"
@@ -113,6 +114,7 @@ jobs:
       - name: Install Composer dependencies
         shell: bash
         run: |
+          # Resolve dependencies according to Composer: ${{ matrix.composer-version }}
           if [ "${{ matrix.composer-version }}" == "snapshot" ]; then
             composer config platform --unset
             composer config minimum-stability dev
