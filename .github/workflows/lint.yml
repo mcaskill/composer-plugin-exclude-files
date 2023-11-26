@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+
 name: "Lint"
 
 #
@@ -21,13 +23,36 @@ on:
       - '**'
 
 env:
-  COMPOSER_FLAGS: "--ansi --no-interaction --prefer-dist"
+  COMPOSER_FLAGS: "--ansi --no-interaction --dev --prefer-dist"
   SYMFONY_PHPUNIT_VERSION: ""
 
 permissions:
   contents: read
 
 jobs:
+  validation:
+    name: "Composer Validation"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+
+      - name: "Setup PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          coverage: "none"
+          extensions: "intl, zip"
+          ini-values: "memory_limit=-1, phar.readonly=0, error_reporting=E_ALL, display_errors=On"
+          php-version: "latest"
+
+      - name: "Install dependencies from composer.lock"
+        run: "composer install ${{ env.COMPOSER_FLAGS }}"
+
+      - name: "Validate composer.json"
+        run: "composer validate --strict"
+
   lint:
     name: "Lint"
 
@@ -43,7 +68,7 @@ jobs:
       - name: "Checkout"
         uses: "actions/checkout@v4"
 
-      - name: "Install PHP"
+      - name: "Setup PHP"
         uses: "shivammathur/setup-php@v2"
         with:
           coverage: "none"
@@ -78,14 +103,14 @@ jobs:
           ini-values: "memory_limit=-1"
           php-version: "${{ matrix.php-version }}"
 
-      - name: "Determine Composer cache directory"
-        id: "determine-composer-cache-directory"
-        run: "echo \"directory=$(composer config cache-dir)\" >> $GITHUB_OUTPUT"
+      - name: Retrieve Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: "Cache dependencies installed with Composer"
         uses: "actions/cache@v3"
         with:
-          path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
+          path: "${{ steps.composer-cache.outputs.dir }}"
           key: "php-${{ matrix.php-version }}-symfony-php-unit-version-${{ env.SYMFONY_PHPUNIT_VERSION }}-${{ hashFiles('**/composer.lock') }}"
           restore-keys: "php-${{ matrix.php-version }}-symfony-php-unit-version-${{ env.SYMFONY_PHPUNIT_VERSION }}"
 

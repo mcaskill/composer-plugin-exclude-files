@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+
 name: "Test"
 
 #
@@ -39,7 +41,7 @@ permissions:
 
 jobs:
   tests:
-    name: "Composer ${{ matrix.composer-version }} / PHP ${{ matrix.php-version }}"
+    name: "PHP ${{ matrix.php-version }} / Composer ${{ matrix.composer-version }} / OS ${{ matrix.os }}"
 
     strategy:
       matrix:
@@ -97,18 +99,19 @@ jobs:
           fail-fast: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get Composer cache directory
+      - name: Retrieve Composer cache directory
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
-      - name: Cache Composer dependencies
+      - name: "Cache dependencies installed with Composer"
         uses: actions/cache@v3
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
+          path: "${{ steps.composer-cache.outputs.dir }}"
           key: ${{ runner.os }}-composer-${{ matrix.composer-version }}-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-${{ matrix.composer-version }}-
 
       - name: Install Composer dependencies
+        shell: bash
         run: |
           composer config platform --unset
           if [ "${{ matrix.composer-version }}" == "snapshot" ]; then
@@ -130,27 +133,3 @@ jobs:
 
       - name: "Run tests"
         run: "vendor/bin/simple-phpunit --verbose"
-
-  validation:
-    name: "Composer Validation"
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v4"
-
-      - name: "Setup PHP"
-        uses: "shivammathur/setup-php@v2"
-        with:
-          coverage: "none"
-          extensions: "intl, zip"
-          ini-values: "memory_limit=-1, phar.readonly=0, error_reporting=E_ALL, display_errors=On"
-          php-version: "8.2"
-          tools: composer
-
-      - name: "Install dependencies from composer.lock"
-        run: "composer install ${{ env.COMPOSER_FLAGS }}"
-
-      - name: "Validate composer.json"
-        run: "composer validate --strict"
