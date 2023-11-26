@@ -53,7 +53,5 @@
     "scripts-descriptions": {
         "lint:phpstan": "Run static code analysis with PHPStan",
         "test:phpunit": "Run all tests with PHPUnit"
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
