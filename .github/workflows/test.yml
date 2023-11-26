@@ -113,18 +113,17 @@ jobs:
       - name: Install Composer dependencies
         shell: bash
         run: |
-          composer config platform --unset
           if [ "${{ matrix.composer-version }}" == "snapshot" ]; then
+            composer config platform --unset
             composer config minimum-stability dev
             composer require ${{ env.COMPOSER_FLAGS }} --update-with-dependencies composer/composer="dev-main"
           elif [ "${{ matrix.composer-version }}" == "preview" ]; then
+            composer config platform --unset
             composer config minimum-stability alpha
             composer require ${{ env.COMPOSER_FLAGS }} --update-with-dependencies composer/composer
           elif [ "${{ matrix.composer-version }}" == "v2" ]; then
-            composer config minimum-stability stable
             composer install ${{ env.COMPOSER_FLAGS }}
           else
-            composer config minimum-stability stable
             composer require ${{ env.COMPOSER_FLAGS }} --update-with-dependencies composer/composer="~${{ matrix.composer-version }}.0"
           fi
 
