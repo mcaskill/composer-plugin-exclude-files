@@ -64,10 +64,6 @@ jobs:
           - false
         include:
           - php-version: "8.2"
-            composer-version: "v2"
-            os: "windows-latest"
-            experimental: false
-          - php-version: "8.2"
             composer-version: "preview"
             os: "ubuntu-latest"
             experimental: true
@@ -75,6 +71,10 @@ jobs:
             composer-version: "snapshot"
             os: "ubuntu-latest"
             experimental: true
+          - php-version: "8.2"
+            composer-version: "v2"
+            os: "windows-latest"
+            experimental: false
           - php-version: "8.4"
             composer-version: "v2"
             os: "ubuntu-latest"
