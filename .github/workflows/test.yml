@@ -33,7 +33,7 @@ on:
     - cron: '0  15  *  *  1'
 
 env:
-  COMPOSER_FLAGS: "--ansi --no-interaction --no-progress --prefer-dist --dev"
+  COMPOSER_FLAGS: "--ansi --no-interaction --no-progress --prefer-dist"
   COMPOSER_UPDATE_FLAGS: ""
 
 permissions:

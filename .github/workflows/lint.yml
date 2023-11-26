@@ -23,7 +23,7 @@ on:
       - '**'
 
 env:
-  COMPOSER_FLAGS: "--ansi --no-interaction --dev --prefer-dist"
+  COMPOSER_FLAGS: "--ansi --no-interaction --prefer-dist"
   SYMFONY_PHPUNIT_VERSION: ""
 
 permissions:
