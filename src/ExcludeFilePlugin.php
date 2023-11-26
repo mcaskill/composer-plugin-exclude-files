@@ -102,7 +102,7 @@ class ExcludeFilePlugin implements
             return;
         }
 
-        $excludedFiles = array_fill_keys($excludedFiles, true);
+        $excludedFiles = \array_fill_keys($excludedFiles, true);
 
         $generator  = $composer->getAutoloadGenerator();
         $packages   = $composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages();
@@ -168,24 +168,24 @@ class ExcludeFilePlugin implements
         $autoload = $package->getAutoload();
 
         // Skip misconfigured packages
-        if (!isset($autoload[$type]) || !is_array($autoload[$type])) {
+        if (!isset($autoload[$type]) || !\is_array($autoload[$type])) {
             return;
         }
 
         if (null !== $package->getTargetDir()) {
-            $installPath = substr($installPath, 0, -strlen('/' . $package->getTargetDir()));
+            $installPath = \substr($installPath, 0, -\strlen('/' . $package->getTargetDir()));
         }
 
         $filtered = false;
 
         foreach ($autoload[$type] as $key => $path) {
-            if ($package->getTargetDir() && !is_readable($installPath.'/'.$path)) {
+            if ($package->getTargetDir() && !\is_readable($installPath.'/'.$path)) {
                 // add target-dir from file paths that don't have it
                 $path = $package->getTargetDir() . '/' . $path;
             }
 
             $resolvedPath = $installPath . '/' . $path;
-            $resolvedPath = strtr($resolvedPath, '\\', '/');
+            $resolvedPath = \strtr($resolvedPath, '\\', '/');
 
             if (isset($excludedFiles[$resolvedPath])) {
                 $filtered = true;
@@ -210,7 +210,7 @@ class ExcludeFilePlugin implements
 
         $extra = $package->getExtra();
 
-        if (isset($extra[$type]) && is_array($extra[$type])) {
+        if (isset($extra[$type]) && \is_array($extra[$type])) {
             return $extra[$type];
         }
 
@@ -243,11 +243,11 @@ class ExcludeFilePlugin implements
         // Fixes failing Windows realpath() implementation.
         // See https://bugs.php.net/bug.php?id=72738
         /** @var string */
-        $vendorPath = realpath(realpath($vendorDir));
+        $vendorPath = \realpath(\realpath($vendorDir));
         $vendorPath = $filesystem->normalizePath($vendorPath);
 
         foreach ($paths as &$path) {
-            $path = preg_replace('{/+}', '/', trim(strtr($path, '\\', '/'), '/'));
+            $path = \preg_replace('{/+}', '/', \trim(\strtr($path, '\\', '/'), '/'));
             $path = $vendorPath . '/' . $path;
         }
 

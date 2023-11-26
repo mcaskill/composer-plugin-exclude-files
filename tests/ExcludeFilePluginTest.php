@@ -17,7 +17,6 @@ use Composer\Autoload\AutoloadGenerator;
 use Composer\Package\Link;
 use Composer\Package\Package;
 use Composer\Package\RootPackage;
-use Composer\Plugin\PluginInterface;
 use Composer\Repository\InstalledArrayRepository;
 use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Semver\Constraint\MatchAllConstraint;
@@ -81,7 +80,7 @@ class ExcludeFilePluginTest extends TestCase
      */
     protected function setUp(): void
     {
-        if (!($cwd = getcwd())) {
+        if (!($cwd = \getcwd())) {
             throw new RuntimeException(
                 'Failed to retrieve the current working directory'
             );
@@ -92,7 +91,7 @@ class ExcludeFilePluginTest extends TestCase
 
         $this->vendorDir = $this->getUniqueTmpDirectory();
         $this->ensureDirectoryExistsAndClear($this->vendorDir);
-        chdir($this->vendorDir);
+        \chdir($this->vendorDir);
 
         $this->io = $this->createMockIOInterface();
 
@@ -124,9 +123,9 @@ class ExcludeFilePluginTest extends TestCase
 
     protected function tearDown(): void
     {
-        chdir($this->origDir);
+        \chdir($this->origDir);
 
-        if (is_dir($this->vendorDir)) {
+        if (\is_dir($this->vendorDir)) {
             $this->fs->removeDirectory($this->vendorDir);
         }
     }
@@ -151,15 +150,23 @@ class ExcludeFilePluginTest extends TestCase
         $this->fs->ensureDirectoryExists($this->vendorDir . '/a/a');
         $this->fs->ensureDirectoryExists($this->vendorDir . '/b/b');
         $this->fs->ensureDirectoryExists($this->vendorDir . '/c/c/foo/bar');
-        file_put_contents($this->vendorDir . '/a/a/test.php', '<?php function test1() {}');
-        file_put_contents($this->vendorDir . '/b/b/test2.php', '<?php function test2() {}');
-        file_put_contents($this->vendorDir . '/c/c/foo/bar/test3.php', '<?php function test3() {}');
-        file_put_contents($this->vendorDir . '/c/c/foo/bar/test4.php', '<?php function test4() {}');
+        \file_put_contents($this->vendorDir . '/a/a/test.php', '<?php function test1() {}');
+        \file_put_contents($this->vendorDir . '/b/b/test2.php', '<?php function test2() {}');
+        \file_put_contents($this->vendorDir . '/c/c/foo/bar/test3.php', '<?php function test3() {}');
+        \file_put_contents($this->vendorDir . '/c/c/foo/bar/test4.php', '<?php function test4() {}');
 
         // 2. Check plugin is ignored if the root package does not exclude files
         $plugin->parseAutoloads();
 
-        $this->generator->dump($this->config, $this->repository, $rootPackage, $this->im, 'composer', true, '_1');
+        $this->generator->dump(
+            $this->config,
+            $this->repository,
+            $rootPackage,
+            $this->im,
+            'composer',
+            true,
+            '_1'
+        );
 
         // Check standard autoload
         $this->assertAutoloadFiles('files1', $this->vendorDir . '/composer', 'files');
@@ -175,7 +182,15 @@ class ExcludeFilePluginTest extends TestCase
         // excludes files from "extra" section
         $plugin->parseAutoloads();
 
-        $this->generator->dump($this->config, $this->repository, $rootPackage, $this->im, 'composer', true, '_1');
+        $this->generator->dump(
+            $this->config,
+            $this->repository,
+            $rootPackage,
+            $this->im,
+            'composer',
+            true,
+            '_1'
+        );
 
         // Make autoload has excluded specified files
         $this->assertAutoloadFiles('files2', $this->vendorDir . '/composer', 'files');
@@ -295,13 +310,13 @@ class ExcludeFilePluginTest extends TestCase
     protected function getUniqueTmpDirectory(): string
     {
         $attempts = 5;
-        $root = sys_get_temp_dir();
+        $root = \sys_get_temp_dir();
 
         do {
-            $unique = $root . DIRECTORY_SEPARATOR . uniqid('composer-test-' . rand(1000, 9000));
+            $unique = $root . DIRECTORY_SEPARATOR . \uniqid('composer-test-' . \rand(1000, 9000));
 
-            if (!file_exists($unique) && Silencer::call('mkdir', $unique, 0777)) {
-                if ($unique = realpath($unique)) {
+            if (!\file_exists($unique) && Silencer::call('mkdir', $unique, 0777)) {
+                if ($unique = \realpath($unique)) {
                     return $unique;
                 }
             }
@@ -319,11 +334,11 @@ class ExcludeFilePluginTest extends TestCase
     {
         $fs = new Filesystem();
 
-        if (is_dir($directory)) {
+        if (\is_dir($directory)) {
             $fs->removeDirectory($directory);
         }
 
-        mkdir($directory, 0777, true);
+        \mkdir($directory, 0777, true);
     }
 
     /**
@@ -348,8 +363,8 @@ class ExcludeFilePluginTest extends TestCase
         string $message = ''
     ): void {
         static::assertEqualsNormalized(
-            (string) file_get_contents($expected),
-            (string) file_get_contents($actual),
+            (string) \file_get_contents($expected),
+            (string) \file_get_contents($actual),
             ($message ?: $expected . ' equals ' . $actual)
         );
     }
@@ -363,8 +378,8 @@ class ExcludeFilePluginTest extends TestCase
         string $message = ''
     ): void {
         static::assertEquals(
-            str_replace("\r", '', $expected),
-            str_replace("\r", '', $actual),
+            \str_replace("\r", '', $expected),
+            \str_replace("\r", '', $actual),
             $message
         );
     }
