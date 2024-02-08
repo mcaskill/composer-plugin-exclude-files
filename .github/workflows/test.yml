@@ -54,15 +54,22 @@ jobs:
           - "8.2"
           - "8.3"
         composer-version:
-          - "2.3"
-          - "2.4"
           - "2.5"
           - "2.6"
+          - "2.7"
         os:
           - "ubuntu-latest"
         experimental:
           - false
         include:
+          - php-version: "8.2"
+            composer-version: "2.3"
+            os: "ubuntu-latest"
+            experimental: false
+          - php-version: "8.2"
+            composer-version: "2.4"
+            os: "ubuntu-latest"
+            experimental: false
           - php-version: "8.2"
             composer-version: "preview"
             os: "ubuntu-latest"
