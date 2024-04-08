@@ -22,15 +22,15 @@ on:
     tags-ignore:
       - '**'
   schedule:
-    # Once weekly on Mondays at 14:00 UTC.
+    # Twice monthly on 1st and 15th at 14:00 UTC.
     #
-    #        ┌───────────── minute           (0 - 59)
-    #        │  ┌────────── hour             (0 - 23)
-    #        │  │  ┌─────── day of the month (1 - 31)
-    #        │  │  │  ┌──── month            (1 - 12 or JAN-DEC)
-    #        │  │  │  │  ┌─ day of the week  (0 - 6 or SUN-SAT)
-    #        │  │  │  │  │
-    - cron: '0  15  *  *  1'
+    #        ┌───────────────── minute           (0 - 59)
+    #        │   ┌───────────── hour             (0 - 23)
+    #        │   │   ┌───────── day of the month (1 - 31)
+    #        │   │   │    ┌──── month            (1 - 12 or JAN-DEC)
+    #        │   │   │    │  ┌─ day of the week  (0 - 6 or SUN-SAT)
+    #        │   │   │    │  │
+    - cron: '0  15  1,15  *  *'
 
 env:
   COMPOSER_FLAGS: "--ansi --no-interaction --no-progress --prefer-dist"
