@@ -33,13 +33,20 @@ composer config allow-plugins.mcaskill/composer-exclude-files true
 > File exclusions of dependencies' `composer.json` are ignored.
 
 From the root `composer.json`, add the `exclude-from-files` property to the
-`extra` section. The list of paths must be relative to this composer manifest's
-vendor directory.
+`extra` section. The list of paths must be relative to this Composer manifest's
+vendor directory: `<vendor-name>/<project-name>/<file-path>`.
+
+This plugin supports a subset of special characters used by
+the [`glob()` function][php-function-glob] to match exclude paths
+matching a pattern:
+
+* `*` — Matches zero or more characters.
+* `?` — Matches exactly one character (any character).
 
 This plugin is invoked before the autoloader is dumped, such as with the
 commands `install`, `update`, and `dump-autoload`.
 
-###### Example 1: Using illuminate/support
+###### Example 1: Excluding one file from illuminate/support
 
 ```json
 {
@@ -59,7 +66,7 @@ commands `install`, `update`, and `dump-autoload`.
 }
 ```
 
-###### Example 2: Using laravel/framework
+###### Example 2: Excluding many files from laravel/framework
 
 ```json
 {
@@ -68,14 +75,24 @@ commands `install`, `update`, and `dump-autoload`.
     },
     "extra": {
         "exclude-from-files": [
-            "laravel/framework/src/Illuminate/Foundation/helpers.php"
+            "laravel/framework/src/*/helpers.php"
         ]
     },
-    "config": {
-        "allow-plugins": {
-            "mcaskill/composer-exclude-files": true
-        }
-    }
+    "config": {…}
+}
+```
+
+###### Example 3: Excluding all files
+
+```json
+{
+    "require": {…},
+    "extra": {
+        "exclude-from-files": [
+            "*"
+        ]
+    },
+    "config": {…}
 }
 ```
 
@@ -91,6 +108,7 @@ The resulting effect is the specified files are never included in
 This is licensed under MIT.
 
 [composer-allow-plugins]: https://getcomposer.org/allow-plugins
+[php-function-glob]:      https://php.net/function.glob
 
 [github-badge]:    https://img.shields.io/github/actions/workflow/status/mcaskill/composer-plugin-exclude-files/test.yml?branch=main
 [license-badge]:   https://poser.pugx.org/mcaskill/composer-exclude-files/license

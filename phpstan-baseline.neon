@@ -1,6 +1,10 @@
 parameters:
   ignoreErrors:
     -
+      message: "#^Parameter \\#1 \\$path of function realpath expects string, mixed given\\.$#"
+      count: 1
+      path: src/Path.php
+    -
       message: "#^Parameter \\#1 \\$path of function realpath expects string, string\\|false given\\.$#"
       count: 1
-      path: src/ExcludeFilePlugin.php
+      path: src/Path.php

@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+* Added support for glob (wildcard) paths to exclude files via new value object classes for paths.
+* Updated tests to support meta-packages and immutable packages.
+* Refactored tests to decouple set-up and tear-down, sort methods by visibility and alphabetically, and improve static analysis.
+
 ## [3.0.1] — 2023-05-24
 
 * Fixed support for changes to metapackages

@@ -14,14 +14,15 @@ namespace McAskill\Composer;
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
-use Composer\Package\Package;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
 use Composer\Util\Filesystem;
-use RuntimeException;
 
+/**
+ * @phpstan-import-type AutoloadRules from PackageInterface
+ */
 class ExcludeFilePlugin implements
     PluginInterface,
     EventSubscriberInterface
@@ -93,53 +94,46 @@ class ExcludeFilePlugin implements
      */
     public function parseAutoloads(): void
     {
-        $composer = $this->composer;
+        $rootPackage = $this->composer->getPackage();
 
-        $package = $composer->getPackage();
-
-        $excludedFiles = $this->parseExcludedFiles($this->getExcludedFiles($package));
-        if (!$excludedFiles) {
+        $excludedFiles = $this->getExcludedFiles($rootPackage);
+        if ($excludedFiles->isEmpty()) {
             return;
         }
 
-        $excludedFiles = \array_fill_keys($excludedFiles, true);
+        $generator  = $this->composer->getAutoloadGenerator();
+        $packageMap = $generator->buildPackageMap(
+            $this->composer->getInstallationManager(),
+            $rootPackage,
+            $this->composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages()
+        );
 
-        $generator  = $composer->getAutoloadGenerator();
-        $packages   = $composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages();
-        $packageMap = $generator->buildPackageMap($composer->getInstallationManager(), $package, $packages);
-
-        $this->filterAutoloads($packageMap, $package, $excludedFiles);
+        $this->filterPackageMapAutoloads($packageMap, $rootPackage, $excludedFiles);
     }
 
     /**
-     * Alters packages to exclude files required in "autoload.files" by
-     * "extra.exclude-from-files".
+     * Alters packages to exclude files required in "autoload.files"
+     * by "extra.exclude-from-files".
      *
-     * @param  array<int, array{PackageInterface, ?string}> $packageMap
-     *     List of packages and their installation paths.
-     * @param  RootPackageInterface                         $rootPackage
-     *     Root package instance.
-     * @param  array<string, true>                          $excludedFiles
-     *     Map of files to exclude from the "files" autoload mechanism.
+     * @param  array{PackageInterface, ?string}[] $packageMap    List of packages
+     *     and their installation paths.
+     * @param  RootPackageInterface               $rootPackage   Root package instance.
+     * @param  Paths                              $excludedFiles Collection of Path instances
+     *     to exclude from the "files" autoload mechanism.
      * @return void
      */
-    private function filterAutoloads(
+    private function filterPackageMapAutoloads(
         array $packageMap,
         RootPackageInterface $rootPackage,
-        array $excludedFiles
+        Paths $excludedFiles
     ): void {
         foreach ($packageMap as [ $package, $installPath ]) {
-            // Skip root package
+            // Skip root package.
             if ($package === $rootPackage) {
                 continue;
             }
 
-            // Skip immutable package
-            if (!($package instanceof Package)) {
-                continue;
-            }
-
-            // Skip packages that are not installed
+            // Skip package if nothing is installed.
             if (null === $installPath) {
                 continue;
             }
@@ -152,23 +146,29 @@ class ExcludeFilePlugin implements
      * Alters a package to exclude files required in "autoload.files" by
      * "extra.exclude-from-files".
      *
-     * @param  Package             $package       The package to filter.
-     * @param  string              $installPath   The installation path of $package.
-     * @param  array<string, true> $excludedFiles Map of files to exclude from
-     *     the "files" autoload mechanism.
+     * @param  PackageInterface $package       The package to filter.
+     * @param  string           $installPath   The installation path of $package.
+     * @param  Paths            $excludedFiles Collection of Path instances to exclude
+     *     from the "files" autoload mechanism.
      * @return void
      */
     private function filterPackageAutoloads(
-        Package $package,
+        PackageInterface $package,
         string $installPath,
-        array $excludedFiles
+        Paths $excludedFiles
     ): void {
+        // Skip package if immutable.
+        if (!\method_exists($package, 'setAutoload')) {
+            return;
+        }
+
         $type = self::INCLUDE_FILES_PROPERTY;
 
+        /** @var array<string, string[]> */
         $autoload = $package->getAutoload();
 
         // Skip misconfigured packages
-        if (!isset($autoload[$type]) || !\is_array($autoload[$type])) {
+        if (empty($autoload[$type]) || !\is_array($autoload[$type])) {
             return;
         }
 
@@ -178,79 +178,50 @@ class ExcludeFilePlugin implements
 
         $filtered = false;
 
-        foreach ($autoload[$type] as $key => $path) {
-            if ($package->getTargetDir() && !\is_readable($installPath.'/'.$path)) {
-                // add target-dir from file paths that don't have it
-                $path = $package->getTargetDir() . '/' . $path;
+        foreach ($autoload[$type] as $index => $localPath) {
+            if ($package->getTargetDir() && !\is_readable($installPath.'/'.$localPath)) {
+                // Add 'target-dir' from file paths that don't have it
+                $localPath = $package->getTargetDir() . '/' . $localPath;
             }
 
-            $resolvedPath = $installPath . '/' . $path;
-            $resolvedPath = \strtr($resolvedPath, '\\', '/');
+            $absolutePath = $installPath . '/' . $localPath;
+            $absolutePath = \strtr($absolutePath, '\\', '/');
 
-            if (isset($excludedFiles[$resolvedPath])) {
+            if ($excludedFiles->isMatch($absolutePath)) {
                 $filtered = true;
-                unset($autoload[$type][$key]);
+                unset($autoload[$type][$index]);
             }
         }
 
         if ($filtered) {
+            /**
+             * @disregard P1013 Package method existance validated earlier.
+             *     {@see https://github.com/bmewburn/vscode-intelephense/issues/952}.
+             */
             $package->setAutoload($autoload);
         }
     }
 
     /**
-     * Gets a list files the root package wants to exclude.
+     * Gets a parsed list of files the given package wants to exclude.
      *
      * @param  PackageInterface $package Root package instance.
-     * @return string[] Retuns the list of excluded files.
+     * @return Paths Retuns a collection of Path instances.
      */
-    private function getExcludedFiles(PackageInterface $package): array
+    private function getExcludedFiles(PackageInterface $package): Paths
     {
         $type = self::EXCLUDE_FILES_PROPERTY;
 
         $extra = $package->getExtra();
 
-        if (isset($extra[$type]) && \is_array($extra[$type])) {
-            return $extra[$type];
+        if (empty($extra[$type]) || !\is_array($extra[$type])) {
+            return new Paths;
         }
 
-        return [];
-    }
-
-    /**
-     * Prepends the vendor directory to each path in "extra.exclude-from-files".
-     *
-     * @param  string[] $paths Array of paths relative to the composer manifest.
-     * @throws RuntimeException If the 'vendor-dir' path is unavailable.
-     * @return string[] Retuns the array of paths, prepended with the vendor directory.
-     */
-    private function parseExcludedFiles(array $paths): array
-    {
-        if (!$paths) {
-            return $paths;
-        }
-
-        $config    = $this->composer->getConfig();
-        $vendorDir = $config->get('vendor-dir');
-        if (!$vendorDir) {
-            throw new RuntimeException(
-                'Invalid value for \'vendor-dir\'. Expected string'
-            );
-        }
-
-        $filesystem = new Filesystem();
-        // Do not remove double realpath() calls.
-        // Fixes failing Windows realpath() implementation.
-        // See https://bugs.php.net/bug.php?id=72738
-        /** @var string */
-        $vendorPath = \realpath(\realpath($vendorDir));
-        $vendorPath = $filesystem->normalizePath($vendorPath);
-
-        foreach ($paths as &$path) {
-            $path = \preg_replace('{/+}', '/', \trim(\strtr($path, '\\', '/'), '/'));
-            $path = $vendorPath . '/' . $path;
-        }
-
-        return $paths;
+        return Paths::create(
+            new Filesystem(),
+            $this->composer->getConfig(),
+            $extra[$type]
+        );
     }
 }
