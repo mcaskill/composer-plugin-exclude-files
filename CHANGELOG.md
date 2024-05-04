@@ -5,7 +5,7 @@
 * Fixed support for changes to metapackages
   in [Composer 2.5.6](https://github.com/composer/composer/releases/tag/2.5.6)
   and [Composer 2.5.7](https://github.com/composer/composer/releases/tag/2.5.7)
-* Update tests
+* Updated tests
 
 ## [3.0.0] — 2022-09-12
 
@@ -53,7 +53,8 @@
 
 * Initial release.
 
-[Unreleased]: https://github.com/mcaskill/composer-plugin-exclude-files/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/mcaskill/composer-plugin-exclude-files/compare/v3.0.1...HEAD
+[3.0.1]:      https://github.com/mcaskill/composer-plugin-exclude-files/compare/v3.0.0...v3.0.1
 [3.0.0]:      https://github.com/mcaskill/composer-plugin-exclude-files/compare/v2.1.0...v3.0.0
 [2.1.0]:      https://github.com/mcaskill/composer-plugin-exclude-files/compare/v2.0.0...v2.1.0
 [2.0.0]:      https://github.com/mcaskill/composer-plugin-exclude-files/compare/v1.3.0...v2.0.0
