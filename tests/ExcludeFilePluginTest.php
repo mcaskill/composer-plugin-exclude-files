@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * This file is part of the "composer-exclude-files" plugin.
@@ -146,7 +148,7 @@ class ExcludeFilePluginTest extends TestCase
             $this->repository->addPackage($package);
         }
 
-        $fs = new Filesystem;
+        $fs = new Filesystem();
 
         $fs->ensureDirectoryExists($this->vendorDir . '/a/a');
         $fs->ensureDirectoryExists($this->vendorDir . '/b/b');
@@ -293,10 +295,10 @@ class ExcludeFilePluginTest extends TestCase
         $c->setAutoload([ 'files' => [ 'test3.php', 'foo/bar/test4.php' ] ]);
         $c->setTargetDir('foo/bar');
         $c->setRequires([
-            'd/d' => new Link('c', 'd/d', new MatchAllConstraint())
+            'd/d' => new Link('c', 'd/d', new MatchAllConstraint()),
         ]);
         $d->setRequires([
-            'e/e' => new Link('d', 'e/e', new MatchAllConstraint())
+            'e/e' => new Link('d', 'e/e', new MatchAllConstraint()),
         ]);
         $e->setType('metapackage');
 
@@ -324,7 +326,7 @@ class ExcludeFilePluginTest extends TestCase
     protected function ensureDirectoryExistsAndClear(string $directory): void
     {
         if (\is_dir($directory)) {
-            (new Filesystem)->removeDirectory($directory);
+            (new Filesystem())->removeDirectory($directory);
         }
 
         \mkdir($directory, 0777, true);
@@ -450,7 +452,7 @@ class ExcludeFilePluginTest extends TestCase
     protected function tearDownVendorDir(): void
     {
         if (\is_string($this->vendorDir) && \is_dir($this->vendorDir)) {
-            (new Filesystem)->removeDirectory($this->vendorDir);
+            (new Filesystem())->removeDirectory($this->vendorDir);
         }
     }
 

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * This file is part of the "composer-exclude-files" plugin.
@@ -72,7 +74,7 @@ final class Path
                 \preg_quote($this->path, '!')
             );
 
-            return (bool) \preg_match('!^'.$pattern.'$!is', $filename);
+            return (bool) \preg_match('!^' . $pattern . '$!is', $filename);
         }
 
         return ($this->path === $filename);

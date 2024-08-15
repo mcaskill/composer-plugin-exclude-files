@@ -54,8 +54,8 @@ To test your modified Composer code against another project, run
 Fork the project, create a feature branch, and send us a pull request.
 
 To ensure a consistent code base, you should make sure the code follows
-the [PSR-2 Coding Standards][PSR-2]. You can also run [PHP-CS-Fixer] with
-the configuration file that can be found in the project root directory.
+the [PER Coding Style 2.0][PER-Coding-Style]. You can also run [PHP-CS-Fixer]
+with the configuration file that can be found in the project root directory.
 
 If you would like to help, take a look at the [list of open issues][issues].
 
@@ -67,6 +67,6 @@ These guidelines are adapted from
 [CODE_OF_CONDUCT]:       https://github.com/mcaskill/composer-plugin-exclude-files/blob/main/CODE_OF_CONDUCT.md
 [Composer-CONTRIBUTING]: https://github.com/composer/composer/blob/2.3.2/.github/CONTRIBUTING.md
 [issues]:                https://github.com/mcaskill/composer-plugin-exclude-files/issues
-[PSR-2]:                 https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
+[PER-Coding-Style]:      https://www.php-fig.org/per/coding-style/
 [PHP-CS-Fixer]:          https://github.com/FriendsOfPHP/PHP-CS-Fixer
 [PHPUnit]:               https://github.com/sebastianbergmann/phpunit

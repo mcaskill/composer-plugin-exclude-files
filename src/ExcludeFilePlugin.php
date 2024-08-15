@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * This file is part of the "composer-exclude-files" plugin.
@@ -116,10 +118,10 @@ class ExcludeFilePlugin implements
      * by "extra.exclude-from-files".
      *
      * @param  array{PackageInterface, ?string}[] $packageMap    List of packages
-     *     and their installation paths.
+     *                                                           and their installation paths.
      * @param  RootPackageInterface               $rootPackage   Root package instance.
      * @param  Paths                              $excludedFiles Collection of Path instances
-     *     to exclude from the "files" autoload mechanism.
+     *                                                           to exclude from the "files" autoload mechanism.
      * @return void
      */
     private function filterPackageMapAutoloads(
@@ -149,7 +151,7 @@ class ExcludeFilePlugin implements
      * @param  PackageInterface $package       The package to filter.
      * @param  string           $installPath   The installation path of $package.
      * @param  Paths            $excludedFiles Collection of Path instances to exclude
-     *     from the "files" autoload mechanism.
+     *                                         from the "files" autoload mechanism.
      * @return void
      */
     private function filterPackageAutoloads(
@@ -179,7 +181,7 @@ class ExcludeFilePlugin implements
         $filtered = false;
 
         foreach ($autoload[$type] as $index => $localPath) {
-            if ($package->getTargetDir() && !\is_readable($installPath.'/'.$localPath)) {
+            if ($package->getTargetDir() && !\is_readable($installPath . '/' . $localPath)) {
                 // Add 'target-dir' from file paths that don't have it
                 $localPath = $package->getTargetDir() . '/' . $localPath;
             }
@@ -206,7 +208,7 @@ class ExcludeFilePlugin implements
      * Gets a parsed list of files the given package wants to exclude.
      *
      * @param  PackageInterface $package Root package instance.
-     * @return Paths Retuns a collection of Path instances.
+     * @return Paths            Retuns a collection of Path instances.
      */
     private function getExcludedFiles(PackageInterface $package): Paths
     {
@@ -215,7 +217,7 @@ class ExcludeFilePlugin implements
         $extra = $package->getExtra();
 
         if (empty($extra[$type]) || !\is_array($extra[$type])) {
-            return new Paths;
+            return new Paths();
         }
 
         return Paths::create(

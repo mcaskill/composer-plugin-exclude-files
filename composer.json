@@ -47,8 +47,8 @@
         "test": [
             "@test:phpunit"
         ],
-        "lint:phpstan": "@php vendor/bin/phpstan analyse",
-        "test:phpunit": "@php simple-phpunit"
+        "lint:phpstan": "phpstan analyse",
+        "test:phpunit": "simple-phpunit"
     },
     "scripts-descriptions": {
         "lint:phpstan": "Run static code analysis with PHPStan",
