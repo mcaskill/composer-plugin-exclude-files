@@ -12,13 +12,9 @@ name: "Test"
 on:
   workflow_dispatch:
   push:
-    paths-ignore:
-      - 'docs/**'
     tags-ignore:
       - '**'
   pull_request:
-    paths-ignore:
-      - 'docs/**'
     tags-ignore:
       - '**'
   schedule:
@@ -94,6 +90,9 @@ jobs:
       - name: "Checkout"
         uses: "actions/checkout@v4"
 
+      - name: "Prepare git environment"
+        run: "git config --global user.name composer && git config --global user.email composer@example.com"
+
       - name: "Setup PHP"
         uses: "shivammathur/setup-php@v2"
         with:
@@ -101,7 +100,7 @@ jobs:
           extensions: "intl, zip"
           ini-values: "memory_limit=-1, phar.readonly=0, error_reporting=E_ALL, display_errors=On"
           php-version: "${{ matrix.php-version }}"
-          tools: "composer:${{ matrix.composer-version }}"
+          tools: composer:${{ matrix.composer-version }}, phpunit-bridge
         env:
           fail-fast: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -136,8 +135,8 @@ jobs:
             composer require ${{ env.COMPOSER_FLAGS }} --update-with-dependencies composer/composer="~${{ matrix.composer-version }}.0"
           fi
 
-      - name: "Prepare git environment"
-        run: "git config --global user.name composer && git config --global user.email composer@example.com"
+      - name: Install PHPUnit
+        run: "./vendor/bin/simple-phpunit install"
 
       - name: "Run tests"
-        run: "vendor/bin/simple-phpunit --verbose"
+        run: "./vendor/bin/simple-phpunit --verbose"

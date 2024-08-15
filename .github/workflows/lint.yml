@@ -12,13 +12,9 @@ name: "Lint"
 on:
   workflow_dispatch:
   push:
-    paths-ignore:
-      - 'docs/**'
     tags-ignore:
       - '**'
   pull_request:
-    paths-ignore:
-      - 'docs/**'
     tags-ignore:
       - '**'
 
@@ -62,37 +58,7 @@ jobs:
       matrix:
         php-version:
           - "7.2"
-          - "latest"
-
-    steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v4"
-
-      - name: "Setup PHP"
-        uses: "shivammathur/setup-php@v2"
-        with:
-          coverage: "none"
-          extensions: "intl"
-          ini-values: "memory_limit=-1, error_reporting=E_ALL, display_errors=On"
-          php-version: "${{ matrix.php-version }}"
-
-      - name: "Lint PHP files"
-        run: "find src/ -type f -name '*.php' -print0 | xargs -0 -L1 -P4 -- php -l -f"
-
-  phpstan:
-    name: "PHPStan"
-
-    runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.experimental }}
-
-    strategy:
-      matrix:
-        include:
-          - php-version: "7.2"
-            experimental: false
-          - php-version: "8.2"
-            experimental: true
-      fail-fast: false
+          - "8.3"
 
     steps:
       - name: "Checkout"
@@ -103,8 +69,9 @@ jobs:
         with:
           coverage: "none"
           extensions: "intl, zip"
-          ini-values: "memory_limit=-1"
+          ini-values: "memory_limit=-1, error_reporting=E_ALL, display_errors=On"
           php-version: "${{ matrix.php-version }}"
+          tools: cs2pr
 
       - name: Retrieve Composer cache directory
         id: composer-cache
@@ -125,8 +92,11 @@ jobs:
         if: "matrix.experimental == false"
         run: "composer config platform --unset && composer install ${{ env.COMPOSER_FLAGS }}"
 
-      - name: "Initialize PHPUnit sources"
-        run: "vendor/bin/simple-phpunit --filter NO_TEST_JUST_AUTOLOAD_THANKS"
+      - name: Install PHPUnit
+        run: "./vendor/bin/simple-phpunit install"
+
+      - name: "Lint PHP files"
+        run: "find src/ -type f -name '*.php' -print0 | xargs -0 -L1 -P4 -- php -l -f"
 
       - name: "Run PHPStan"
-        run: "composer lint:phpstan"
+        run: "./vendor/bin/phpstan analyse --error-format=checkstyle | cs2pr"
