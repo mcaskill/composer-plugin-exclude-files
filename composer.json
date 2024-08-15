@@ -15,8 +15,8 @@
     },
     "require-dev": {
         "composer/composer": "^2.3",
-        "phpstan/phpstan": "^1.7",
-        "symfony/phpunit-bridge": "^6.0"
+        "phpstan/phpstan": "^1.11",
+        "symfony/phpunit-bridge": "^7.1"
     },
     "autoload": {
         "psr-4": {
