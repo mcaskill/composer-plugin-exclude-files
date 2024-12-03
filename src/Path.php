@@ -32,7 +32,7 @@ final class Path
      */
     private $glob;
 
-    public static function create(Filesystem $filesystem, string $path, self $basePath = null): self
+    public static function create(Filesystem $filesystem, string $path, ?self $basePath = null): self
     {
         $path = $filesystem->normalizePath($path);
         /** @todo Replace with {@see \str_contains()} when we drop support for PHP 7. */
