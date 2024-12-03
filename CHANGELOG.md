@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.0.1] — 2024-12-03
+
+* Fixed PHP 8.4 deprecation notice in `Path` class (#20).
+
 ## [4.0.0] — 2024-05-19
 
 * Added support for glob (wildcard) paths to exclude files via new value object classes for paths.
@@ -59,7 +63,8 @@
 
 * Initial release.
 
-[Unreleased]: https://github.com/mcaskill/composer-plugin-exclude-files/compare/v4.0.0...HEAD
+[Unreleased]: https://github.com/mcaskill/composer-plugin-exclude-files/compare/v4.0.1...HEAD
+[4.0.1]:      https://github.com/mcaskill/composer-plugin-exclude-files/compare/v4.0.0...v4.0.1
 [4.0.0]:      https://github.com/mcaskill/composer-plugin-exclude-files/compare/v3.0.1...v4.0.0
 [3.0.1]:      https://github.com/mcaskill/composer-plugin-exclude-files/compare/v3.0.0...v3.0.1
 [3.0.0]:      https://github.com/mcaskill/composer-plugin-exclude-files/compare/v2.1.0...v3.0.0
