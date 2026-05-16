@@ -14,6 +14,8 @@ Resolves [composer/composer#5029](//github.com/composer/composer/issues/5029)
 
 ## Installation
 
+The plugin requires at least Composer v2.9.
+
 The plugin can be installed locally or globally.
 
 ```shell
@@ -51,7 +53,7 @@ commands `install`, `update`, and `dump-autoload`.
 ```json
 {
     "require": {
-        "illuminate/support": "^9.6"
+        "illuminate/support": "^13.9"
     },
     "extra": {
         "exclude-from-files": [
@@ -71,7 +73,7 @@ commands `install`, `update`, and `dump-autoload`.
 ```json
 {
     "require": {
-        "laravel/framework": "^9.6"
+        "laravel/framework": "^13.9"
     },
     "extra": {
         "exclude-from-files": [
