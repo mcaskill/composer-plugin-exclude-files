@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c48d58ad4cc7b5bce84ffb1247ded5d",
+    "content-hash": "163eb0cd08ea55562e5648366a3ce340",
     "packages": [],
     "packages-dev": [
         {
@@ -81,16 +81,16 @@
         },
         {
             "name": "composer/class-map-generator",
-            "version": "1.7.2",
+            "version": "1.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/class-map-generator.git",
-                "reference": "6a9c2f0970022ab00dc58c07d0685dd712f2231b"
+                "reference": "86d8208fc3c649a3a999daf1a63c25201be2990f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/class-map-generator/zipball/6a9c2f0970022ab00dc58c07d0685dd712f2231b",
-                "reference": "6a9c2f0970022ab00dc58c07d0685dd712f2231b",
+                "url": "https://api.github.com/repos/composer/class-map-generator/zipball/86d8208fc3c649a3a999daf1a63c25201be2990f",
+                "reference": "86d8208fc3c649a3a999daf1a63c25201be2990f",
                 "shasum": ""
             },
             "require": {
@@ -134,7 +134,7 @@
             ],
             "support": {
                 "issues": "https://github.com/composer/class-map-generator/issues",
-                "source": "https://github.com/composer/class-map-generator/tree/1.7.2"
+                "source": "https://github.com/composer/class-map-generator/tree/1.7.3"
             },
             "funding": [
                 {
@@ -146,20 +146,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-30T15:36:56+00:00"
+            "time": "2026-05-05T09:17:07+00:00"
         },
         {
             "name": "composer/composer",
-            "version": "2.9.6",
+            "version": "2.9.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "9afc32c056d65f9bc4af64ca2aa264a0a38568e5"
+                "reference": "39ee8baff8e97a1b657bbfcd6a236ff93a5efbb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/9afc32c056d65f9bc4af64ca2aa264a0a38568e5",
-                "reference": "9afc32c056d65f9bc4af64ca2aa264a0a38568e5",
+                "url": "https://api.github.com/repos/composer/composer/zipball/39ee8baff8e97a1b657bbfcd6a236ff93a5efbb2",
+                "reference": "39ee8baff8e97a1b657bbfcd6a236ff93a5efbb2",
                 "shasum": ""
             },
             "require": {
@@ -247,7 +247,7 @@
                 "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/composer/issues",
                 "security": "https://github.com/composer/composer/security/policy",
-                "source": "https://github.com/composer/composer/tree/2.9.6"
+                "source": "https://github.com/composer/composer/tree/2.9.8"
             },
             "funding": [
                 {
@@ -259,7 +259,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-14T09:41:22+00:00"
+            "time": "2026-05-13T07:28:38+00:00"
         },
         {
             "name": "composer/metadata-minifier",
@@ -630,16 +630,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "6.8.0",
+            "version": "6.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jsonrainbow/json-schema.git",
-                "reference": "89ac92bcfe5d0a8a4433c7b89d394553ae7250cc"
+                "reference": "2c89ebb95ca9cedc9347f780333f7b25792dcb76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/89ac92bcfe5d0a8a4433c7b89d394553ae7250cc",
-                "reference": "89ac92bcfe5d0a8a4433c7b89d394553ae7250cc",
+                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/2c89ebb95ca9cedc9347f780333f7b25792dcb76",
+                "reference": "2c89ebb95ca9cedc9347f780333f7b25792dcb76",
                 "shasum": ""
             },
             "require": {
@@ -649,7 +649,7 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "3.3.0",
-                "json-schema/json-schema-test-suite": "^23.2",
+                "json-schema/json-schema-test-suite": "dev-main",
                 "marc-mabe/php-enum-phpstan": "^2.0",
                 "phpspec/prophecy": "^1.19",
                 "phpstan/phpstan": "^1.12",
@@ -699,9 +699,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jsonrainbow/json-schema/issues",
-                "source": "https://github.com/jsonrainbow/json-schema/tree/6.8.0"
+                "source": "https://github.com/jsonrainbow/json-schema/tree/6.8.2"
             },
-            "time": "2026-04-02T12:43:11+00:00"
+            "time": "2026-05-05T05:39:01+00:00"
         },
         {
             "name": "marc-mabe/php-enum",
@@ -778,16 +778,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.11.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "640410b32995914bde3eed26fa89552f9c2c082f"
-            },
+            "version": "1.12.33",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/640410b32995914bde3eed26fa89552f9c2c082f",
-                "reference": "640410b32995914bde3eed26fa89552f9c2c082f",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/37982d6fc7cbb746dda7773530cda557cdf119e1",
+                "reference": "37982d6fc7cbb746dda7773530cda557cdf119e1",
                 "shasum": ""
             },
             "require": {
@@ -832,7 +827,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-08-08T09:02:50+00:00"
+            "time": "2026-02-28T20:30:03+00:00"
         },
         {
             "name": "psr/container",
@@ -1476,16 +1471,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v7.1.3",
+            "version": "v7.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "e823122d31935eb711e2767c31f3d71cb0b87fb1"
+                "reference": "ed77a629c13979e051b7000a317966474d566398"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/e823122d31935eb711e2767c31f3d71cb0b87fb1",
-                "reference": "e823122d31935eb711e2767c31f3d71cb0b87fb1",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/ed77a629c13979e051b7000a317966474d566398",
+                "reference": "ed77a629c13979e051b7000a317966474d566398",
                 "shasum": ""
             },
             "require": {
@@ -1505,8 +1500,8 @@
             "type": "symfony-bridge",
             "extra": {
                 "thanks": {
-                    "name": "phpunit/phpunit",
-                    "url": "https://github.com/sebastianbergmann/phpunit"
+                    "url": "https://github.com/sebastianbergmann/phpunit",
+                    "name": "phpunit/phpunit"
                 }
             },
             "autoload": {
@@ -1537,8 +1532,11 @@
             ],
             "description": "Provides utilities for PHPUnit, especially user deprecation notices management",
             "homepage": "https://symfony.com",
+            "keywords": [
+                "testing"
+            ],
             "support": {
-                "source": "https://github.com/symfony/phpunit-bridge/tree/v7.1.3"
+                "source": "https://github.com/symfony/phpunit-bridge/tree/v7.3.4"
             },
             "funding": [
                 {
@@ -1550,15 +1548,19 @@
                     "type": "github"
                 },
                 {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
                     "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-26T12:41:01+00:00"
+            "time": "2025-09-12T12:18:52+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.35.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
@@ -1617,7 +1619,7 @@
                 "portable"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.35.0"
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -1641,16 +1643,16 @@
         },
         {
             "name": "symfony/polyfill-intl-grapheme",
-            "version": "v1.35.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-grapheme.git",
-                "reference": "ad1b7b9092976d6c948b8a187cec9faaea9ec1df"
+                "reference": "4864388bfbd3001ce88e234fab652acd91fdc57e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-grapheme/zipball/ad1b7b9092976d6c948b8a187cec9faaea9ec1df",
-                "reference": "ad1b7b9092976d6c948b8a187cec9faaea9ec1df",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-grapheme/zipball/4864388bfbd3001ce88e234fab652acd91fdc57e",
+                "reference": "4864388bfbd3001ce88e234fab652acd91fdc57e",
                 "shasum": ""
             },
             "require": {
@@ -1699,7 +1701,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-grapheme/tree/v1.35.0"
+                "source": "https://github.com/symfony/polyfill-intl-grapheme/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -1719,11 +1721,11 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-04-10T16:19:22+00:00"
+            "time": "2026-04-26T13:13:48+00:00"
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
-            "version": "v1.35.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-normalizer.git",
@@ -1784,7 +1786,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.35.0"
+                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -1808,7 +1810,7 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.35.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
@@ -1869,7 +1871,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.35.0"
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -1893,7 +1895,7 @@
         },
         {
             "name": "symfony/polyfill-php73",
-            "version": "v1.35.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php73.git",
@@ -1949,7 +1951,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php73/tree/v1.35.0"
+                "source": "https://github.com/symfony/polyfill-php73/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -1973,7 +1975,7 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.35.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
@@ -2033,7 +2035,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.35.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -2057,7 +2059,7 @@
         },
         {
             "name": "symfony/polyfill-php81",
-            "version": "v1.35.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php81.git",
@@ -2113,7 +2115,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php81/tree/v1.35.0"
+                "source": "https://github.com/symfony/polyfill-php81/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -2137,7 +2139,7 @@
         },
         {
             "name": "symfony/polyfill-php84",
-            "version": "v1.35.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php84.git",
@@ -2193,7 +2195,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php84/tree/v1.35.0"
+                "source": "https://github.com/symfony/polyfill-php84/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -2458,7 +2460,7 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^7.2.5 || ^8.0",
-        "composer-plugin-api": "^2.3"
+        "composer-plugin-api": "^2.9"
     },
     "platform-dev": {},
     "platform-overrides": {
