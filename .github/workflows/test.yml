@@ -5,7 +5,7 @@ name: "Test"
 #
 # Based on workflows from Composer:
 # 
-# * https://github.com/composer/composer/blob/2.5.4/.github/workflows/continuous-integration.yml
+# * https://github.com/composer/composer/blob/2.9.8/.github/workflows/continuous-integration.yml
 # * https://github.com/composer/installers/blob/v2.2.0/.github/workflows/continuous-integration.yml
 #
 
@@ -18,19 +18,18 @@ on:
     tags-ignore:
       - '**'
   schedule:
-    # Twice monthly on 1st and 15th at 14:00 UTC.
+    # Once monthly on 15th at 15:00 UTC.
     #
-    #        ┌───────────────── minute           (0 - 59)
-    #        │   ┌───────────── hour             (0 - 23)
-    #        │   │   ┌───────── day of the month (1 - 31)
-    #        │   │   │    ┌──── month            (1 - 12 or JAN-DEC)
-    #        │   │   │    │  ┌─ day of the week  (0 - 6 or SUN-SAT)
-    #        │   │   │    │  │
-    - cron: '0  15  1,15  *  *'
+    #        ┌─────────────── minute           (0 - 59)
+    #        │   ┌─────────── hour             (0 - 23)
+    #        │   │   ┌─────── day of the month (1 - 31)
+    #        │   │   │  ┌──── month            (1 - 12 or JAN-DEC)
+    #        │   │   │  │  ┌─ day of the week  (0 - 6 or SUN-SAT)
+    #        │   │   │  │  │
+    - cron: '0  15  15  *  *'
 
 env:
   COMPOSER_FLAGS: "--ansi --no-interaction --no-progress --prefer-dist"
-  COMPOSER_UPDATE_FLAGS: ""
 
 permissions:
   contents: read
@@ -49,36 +48,28 @@ jobs:
           - "8.1"
           - "8.2"
           - "8.3"
+          - "8.4"
+          - "8.5"
         composer-version:
-          - "2.5"
-          - "2.6"
-          - "2.7"
+          - "2.9"
         os:
           - "ubuntu-latest"
         experimental:
           - false
         include:
-          - php-version: "8.2"
-            composer-version: "2.3"
-            os: "ubuntu-latest"
-            experimental: false
-          - php-version: "8.2"
-            composer-version: "2.4"
-            os: "ubuntu-latest"
-            experimental: false
-          - php-version: "8.2"
+          - php-version: "8.4"
             composer-version: "preview"
             os: "ubuntu-latest"
             experimental: true
-          - php-version: "8.2"
+          - php-version: "8.4"
             composer-version: "snapshot"
             os: "ubuntu-latest"
             experimental: true
-          - php-version: "8.2"
+          - php-version: "8.4"
             composer-version: "v2"
             os: "windows-latest"
             experimental: false
-          - php-version: "8.4"
+          - php-version: "8.6"
             composer-version: "v2"
             os: "ubuntu-latest"
             experimental: true
@@ -88,54 +79,39 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v6"
+        uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6.0.2
 
       - name: "Prepare git environment"
         run: "git config --global user.name composer && git config --global user.email composer@example.com"
 
       - name: "Setup PHP"
-        uses: "shivammathur/setup-php@v2"
+        uses: "shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc" # 2.37.1
         with:
           coverage: "none"
           extensions: "intl, zip"
-          ini-values: "memory_limit=-1, phar.readonly=0, error_reporting=E_ALL, display_errors=On"
+          ini-values: "memory_limit=-1, error_reporting=E_ALL, display_errors=On"
           php-version: "${{ matrix.php-version }}"
-          tools: composer:${{ matrix.composer-version }}, phpunit-bridge
-        env:
-          fail-fast: true
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tools: composer:${{ matrix.composer-version }}
 
-      - name: Retrieve Composer cache directory
-        id: composer-cache
-        shell: bash
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: "Cache dependencies installed with Composer"
-        uses: actions/cache@v5
-        with:
-          path: "${{ steps.composer-cache.outputs.dir }}"
-          key: ${{ runner.os }}-composer-${{ matrix.composer-version }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-${{ matrix.composer-version }}-
-
-      - name: Install Composer dependencies
+      - name: "Install Composer dependencies"
         shell: bash
         run: |
           # Resolve dependencies according to Composer: ${{ matrix.composer-version }}
           if [ "${{ matrix.composer-version }}" == "snapshot" ]; then
             composer config platform --unset
             composer config minimum-stability dev
-            composer require ${{ env.COMPOSER_FLAGS }} --update-with-dependencies composer/composer="dev-main"
+            composer require ${{ env.COMPOSER_FLAGS }} --update-with-dependencies --dev composer/composer="dev-main"
           elif [ "${{ matrix.composer-version }}" == "preview" ]; then
             composer config platform --unset
             composer config minimum-stability alpha
-            composer require ${{ env.COMPOSER_FLAGS }} --update-with-dependencies composer/composer
+            composer require ${{ env.COMPOSER_FLAGS }} --update-with-dependencies --dev composer/composer
           elif [ "${{ matrix.composer-version }}" == "v2" ]; then
             composer install ${{ env.COMPOSER_FLAGS }}
           else
-            composer require ${{ env.COMPOSER_FLAGS }} --update-with-dependencies composer/composer="~${{ matrix.composer-version }}.0"
+            composer require ${{ env.COMPOSER_FLAGS }} --update-with-dependencies --dev composer/composer="~${{ matrix.composer-version }}.0"
           fi
 
-      - name: Install PHPUnit
+      - name: "Install PHPUnit"
         run: "./vendor/bin/simple-phpunit install"
 
       - name: "Run tests"
