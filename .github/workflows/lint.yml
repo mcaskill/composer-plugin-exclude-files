@@ -3,20 +3,23 @@
 name: "Lint"
 
 #
-# Based on workflows from Composer:
+# Based on workflows from other projects:
 # 
 # * https://github.com/composer/composer/blob/2.9.8/.github/workflows/lint.yml
 # * https://github.com/composer/composer/blob/2.9.8/.github/workflows/phpstan.yml
+# * https://github.com/ramsey/composer-install/blob/4.0.0/.github/workflows/continuous-integration.yml
 #
 
 on:
-  workflow_dispatch:
-  push:
-    tags-ignore:
-      - '**'
-  pull_request:
-    tags-ignore:
-      - '**'
+  pull_request: ~
+  push: ~
+  workflow_dispatch: ~
+
+# Cancels all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -30,6 +33,8 @@ jobs:
     steps:
       - name: "Checkout"
         uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: "Setup PHP"
         uses: "shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc" # 2.37.1
@@ -61,6 +66,8 @@ jobs:
     steps:
       - name: "Checkout"
         uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: "Setup PHP"
         uses: "shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc" # 2.37.1

@@ -3,22 +3,19 @@
 name: "Test"
 
 #
-# Based on workflows from Composer:
+# Based on workflows from other projects:
 # 
 # * https://github.com/composer/composer/blob/2.9.8/.github/workflows/continuous-integration.yml
 # * https://github.com/composer/installers/blob/v2.2.0/.github/workflows/continuous-integration.yml
+# * https://github.com/ramsey/composer-install/blob/4.0.0/.github/workflows/continuous-integration.yml
 #
 
 on:
-  workflow_dispatch:
-  push:
-    tags-ignore:
-      - '**'
-  pull_request:
-    tags-ignore:
-      - '**'
+  pull_request: ~
+  push: ~
   schedule:
-    # Once monthly on 15th at 15:00 UTC.
+    # Once monthly on 15th at 15:00 UTC to test
+    # on latest versions of Composer and PHP.
     #
     #        ┌─────────────── minute           (0 - 59)
     #        │   ┌─────────── hour             (0 - 23)
@@ -27,6 +24,13 @@ on:
     #        │   │   │  │  ┌─ day of the week  (0 - 6 or SUN-SAT)
     #        │   │   │  │  │
     - cron: '0  15  15  *  *'
+  workflow_dispatch: ~
+
+# Cancels all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   COMPOSER_FLAGS: "--ansi --no-interaction --no-progress --prefer-dist"
@@ -80,6 +84,8 @@ jobs:
     steps:
       - name: "Checkout"
         uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: "Prepare git environment"
         run: "git config --global user.name composer && git config --global user.email composer@example.com"
@@ -95,20 +101,21 @@ jobs:
 
       - name: "Install Composer dependencies"
         shell: bash
+        env:
+          COMPOSER_VERSION: ${{ matrix.composer-version }}
         run: |
-          # Resolve dependencies according to Composer: ${{ matrix.composer-version }}
-          if [ "${{ matrix.composer-version }}" == "snapshot" ]; then
+          if [ "$COMPOSER_VERSION" == "snapshot" ]; then
             composer config platform --unset
             composer config minimum-stability dev
-            composer require ${{ env.COMPOSER_FLAGS }} --update-with-dependencies --dev composer/composer="dev-main"
-          elif [ "${{ matrix.composer-version }}" == "preview" ]; then
+            composer require $COMPOSER_FLAGS --update-with-dependencies --dev composer/composer="dev-main"
+          elif [ "$COMPOSER_VERSION" == "preview" ]; then
             composer config platform --unset
             composer config minimum-stability alpha
-            composer require ${{ env.COMPOSER_FLAGS }} --update-with-dependencies --dev composer/composer
-          elif [ "${{ matrix.composer-version }}" == "v2" ]; then
-            composer install ${{ env.COMPOSER_FLAGS }}
+            composer require $COMPOSER_FLAGS --update-with-dependencies --dev composer/composer
+          elif [ "$COMPOSER_VERSION" == "v2" ]; then
+            composer install $COMPOSER_FLAGS
           else
-            composer require ${{ env.COMPOSER_FLAGS }} --update-with-dependencies --dev composer/composer="~${{ matrix.composer-version }}.0"
+            composer require $COMPOSER_FLAGS --update-with-dependencies --dev composer/composer="~$COMPOSER_VERSION.0"
           fi
 
       - name: "Install PHPUnit"
