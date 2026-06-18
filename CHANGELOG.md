@@ -1,5 +1,10 @@
 # Changelog
 
+## [5.0.0] — 2026-06-18
+
+* BC Break: Minimum supported Composer plugin API version is now 2.9.0
+  (see [release for Composer 2.9.0](https://github.com/composer/composer/releases/tag/2.9.0))
+
 ## [4.0.1] — 2024-12-03
 
 * Fixed PHP 8.4 deprecation notice in `Path` class (#20).
@@ -63,7 +68,8 @@
 
 * Initial release.
 
-[Unreleased]: https://github.com/mcaskill/composer-plugin-exclude-files/compare/v4.0.1...HEAD
+[Unreleased]: https://github.com/mcaskill/composer-plugin-exclude-files/compare/v5.0.0...HEAD
+[5.0.0]:      https://github.com/mcaskill/composer-plugin-exclude-files/compare/v4.0.1...v5.0.0
 [4.0.1]:      https://github.com/mcaskill/composer-plugin-exclude-files/compare/v4.0.0...v4.0.1
 [4.0.0]:      https://github.com/mcaskill/composer-plugin-exclude-files/compare/v3.0.1...v4.0.0
 [3.0.1]:      https://github.com/mcaskill/composer-plugin-exclude-files/compare/v3.0.0...v3.0.1
