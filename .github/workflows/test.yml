@@ -55,7 +55,7 @@ jobs:
           - "8.4"
           - "8.5"
         composer-version:
-          - "2.9"
+          - "2.10"
         os:
           - "ubuntu-latest"
         experimental:
