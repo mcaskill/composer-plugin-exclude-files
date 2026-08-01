@@ -115,7 +115,7 @@ jobs:
           elif [ "$COMPOSER_VERSION" == "v2" ]; then
             composer install $COMPOSER_FLAGS
           else
-            composer require $COMPOSER_FLAGS --update-with-dependencies --dev composer/composer="~$COMPOSER_VERSION.0"
+            composer require $COMPOSER_FLAGS --update-with-dependencies --dev composer/composer="$COMPOSER_VERSION.*"
           fi
 
       - name: "Install PHPUnit"
